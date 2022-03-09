@@ -1,18 +1,61 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Navbar />
+  <div class="container-fluid home">
+    <!-- <ul>
+      <li v-for="request in requests" :key="request.id">
+        <div class="details">
+          <h3>{{ request.name }}</h3>
+          <p>{{ request.email }}</p>
+          <p>{{ request.request }}</p>
+        </div>
+      </li>
+    </ul> -->
+    <Logo :loaded="loaded" />
+    <About />
+    <CreateBookForm />
   </div>
+  <Footer />
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+//import { ref } from "vue";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Logo from "@/components/Logo";
+import About from "@/components/About";
+import CreateBookForm from "@/components/CreateBookForm";
+import getCollection from "@/composables/getCollection";
+
+// firebase imports
+//import { db } from "../firebase/config";
+//import { collection, getDocs } from "firebase/firestore";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+  name: "Home",
+  props: ["loaded"],
+  components: { Navbar, Footer, Logo, About, CreateBookForm },
+  setup() {
+    const { docs: requests } = getCollection("requests");
+    // const colRef = collection(db, "requests");
+
+    // getDocs(colRef).then((snapshot) => {
+    //   let docs = [];
+    //   snapshot.docs.forEach((doc) => {
+    //     docs.push({ ...doc.data(), id: doc.id });
+    //   });
+    //   requests.value = docs;
+    // });
+
+    return { requests };
+  },
+};
 </script>
+
+<style lang="scss" scoped>
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
