@@ -121,6 +121,9 @@ nav {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    & svg {
+      margin-top: 5px;
+    }
   }
 }
 </style>

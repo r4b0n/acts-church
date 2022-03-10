@@ -13,6 +13,7 @@
     <Logo :loaded="loaded" />
     <About />
     <CreateBookForm />
+    <Events />
   </div>
   <Footer />
 </template>
@@ -23,6 +24,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import About from "@/components/About";
+import Events from "@/components/Events";
 import CreateBookForm from "@/components/CreateBookForm";
 import getCollection from "@/composables/getCollection";
 
@@ -33,7 +35,7 @@ import getCollection from "@/composables/getCollection";
 export default {
   name: "Home",
   props: ["loaded"],
-  components: { Navbar, Footer, Logo, About, CreateBookForm },
+  components: { Navbar, Footer, Logo, About, Events, CreateBookForm },
   setup() {
     const { docs: requests } = getCollection("requests");
     // const colRef = collection(db, "requests");
