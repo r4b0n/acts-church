@@ -60,7 +60,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  --scrollbarBG: #000;
+  --scrollbarBG: #111111;
   --thumbBG: #707070;
   scrollbar-width: thin;
   scrollbar-color: var(--thumbBG) var(--scrollbarBG);

@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+    <HomeBtn />
     <!-- SUCCESSFUL_SUBMISSION_MESSAGE -->
     <div class="container-fluid" v-if="submission">
       <div class="alert alert-success" role="alert">
@@ -71,8 +72,10 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
+import HomeBtn from "@/components/HomeBtn";
 
 export default {
+  components: { HomeBtn },
   data() {
     return {
       email: "",

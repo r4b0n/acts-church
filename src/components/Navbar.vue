@@ -1,14 +1,12 @@
 <template>
   <nav>
-    <router-link class="btn-home btns" to="/">
-      <svg viewBox="0 0 70 70" width="70" height="70">
-        <path
-          class="icon"
-          fill="#707070"
-          d="M35,13.1L10,36.7h8.9v20.2h32.3V36.7H60L35,13.1z M44.4,37.5H37v13.9H33V37.5h-7.4v-3.9H33v-7H37v7h7.4V37.5z"
-        />
-      </svg>
-    </router-link>
+    <HomeBtn />
+    <ul class="navigation">
+      <li><i class="fa-solid fa-circle-plus fa-xs"></i> Request</li>
+      <li><i class="fa-solid fa-calendar fa-xs"></i> Events</li>
+      <li><i class="fa-solid fa-cross fa-xs"></i> Testimonies</li>
+      <li><i class="fa-solid fa-list fa-xs"></i> Requests</li>
+    </ul>
     <!-- for logged in users -->
     <!-- <div>
       <router-link class="btn-login btns" to="/"
@@ -57,7 +55,10 @@
 </template>
 
 <script>
-export default {};
+import HomeBtn from "@/components/HomeBtn";
+export default {
+  components: { HomeBtn },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -70,6 +71,26 @@ nav {
   align-items: center;
   justify-content: space-between;
   z-index: 10;
+
+  & .navigation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & li {
+      cursor: pointer;
+      margin: 12px;
+      font-size: 1.1rem;
+      &:hover {
+        color: #45c3ff;
+      }
+    }
+  }
 
   & a {
     color: #707070;

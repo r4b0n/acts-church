@@ -1,5 +1,8 @@
 <template>
-  <div class="loader"></div>
+  <div class="loader">
+    <div class="rec"></div>
+    <div class="rec"></div>
+  </div>
 </template>
 
 <script>
@@ -18,6 +21,8 @@ export default {};
   transform-origin: center;
   overflow: hidden;
   animation: rot 500ms 1 ease-out;
+  display: flex;
+  justify-content: center;
   @keyframes rot {
     from {
       transform: rotate(-180deg);
@@ -26,7 +31,18 @@ export default {};
       transform: rotate(0deg);
     }
   }
-  &::after {
+  & .rec {
+    position: absolute;
+    background: #f7f7f7;
+    width: 5px;
+    height: 40px;
+    &:nth-child(2) {
+      width: 25px;
+      height: 5px;
+      top: 10px;
+    }
+  }
+  &::before {
     content: "";
     position: absolute;
     background: #45c3ff;
