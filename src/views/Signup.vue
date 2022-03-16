@@ -66,22 +66,48 @@
 </template>
 
 <script>
+import { ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
+//import { useRouter } from "vue-router";
 import HomeBtn from "@/components/HomeBtn";
+
+// firebase imports
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default {
   components: { HomeBtn },
   data() {
     return {
-      email: "",
-      password: "",
+      //email: "",
+      //password: "",
       submission: false,
     };
   },
   setup() {
+    const email = ref("");
+    const password = ref("");
+    const err = ref(null);
+
+    const handleSubmit = async () => {
+      const auth = getAuth();
+
+      createUserWithEmailAndPassword(auth, email.value, password.value)
+        .then((user) => {
+          console.log(user);
+          err.value = null;
+        })
+        .catch((error) => {
+          err.value = error.message;
+          console.log(err.value);
+        });
+    };
+
     return {
       v$: useVuelidate(),
+      email,
+      password,
+      handleSubmit,
     };
   },
   validations() {
@@ -91,24 +117,33 @@ export default {
     };
   },
   methods: {
-    async handleSubmit() {
-      let form = document.querySelector(".needs-validation");
-      form.checkValidity();
+    // async handleSubmit() {
+    //   let form = document.querySelector(".needs-validation");
+    //   form.checkValidity();
 
-      // check for valid form
-      const isFormGood2Go = await this.v$.$validate();
-      if (!isFormGood2Go) {
-        return;
-      }
+    //   // check for valid form
+    //   const isFormGood2Go = await this.v$.$validate();
+    //   if (!isFormGood2Go) {
+    //     return;
+    //   }
 
-      form.classList.add("was-validated");
+    //   await this.signup(this.email, this.password);
+    //   console.log(this.error);
+    //   if (!this.error) {
+    //     this.router.push("/");
+    //   } else {
+    //     console.log(this.auth.error);
+    //     return;
+    //   }
 
-      this.resetForm();
-      this.submission = true;
-    },
+    //   form.classList.add("was-validated");
+
+    //   this.resetForm();
+    //   this.submission = true;
+    // },
     resetForm() {
-      this.email = "";
-      this.password = "";
+      //this.email = "";
+      //this.password = "";
     },
   },
 };

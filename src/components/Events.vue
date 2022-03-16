@@ -1,12 +1,15 @@
 <template>
-  <div class="events container-fluid py-4">
+  <div id="section-events" class="events container-fluid py-4">
     <div class="pattern"></div>
     <div class="content container-fluid">
-      <h1>Community Events</h1>
+      <h1>Church Events</h1>
       <div class="event p-3">
         <img src="@/assets/img-event.png" class="venue-logo" />
         <div class="info">
-          <h2><i class="fa-solid fa-calendar-days fa-xs"></i> May 1st 2022</h2>
+          <h2>
+            <i class="fa-solid fa-calendar-days fa-xs" style="color: black"></i>
+            May 1st 2022
+          </h2>
           <p>
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio
             veritatis deserunt hic suscipit ipsam obcaecati aperiam qui numquam,
@@ -180,7 +183,7 @@ export default {};
     }
   }
   & h1 {
-    padding: 0 100px;
+    padding: 0 40px;
     & span {
       color: black;
     }

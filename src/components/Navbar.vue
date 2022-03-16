@@ -2,10 +2,18 @@
   <nav>
     <HomeBtn />
     <ul class="navigation">
-      <li><i class="fa-solid fa-circle-plus fa-xs"></i> Request</li>
-      <li><i class="fa-solid fa-calendar fa-xs"></i> Events</li>
-      <li><i class="fa-solid fa-cross fa-xs"></i> Testimonies</li>
-      <li><i class="fa-solid fa-list fa-xs"></i> Requests</li>
+      <li class="request" @click="handleBtnClick">
+        <i class="fa-solid fa-circle-plus fa-xs"></i> Request
+      </li>
+      <li class="events" @click="handleBtnClick">
+        <i class="fa-solid fa-calendar fa-xs"></i> Events
+      </li>
+      <li class="testimony" @click="handleBtnClick">
+        <i class="fa-solid fa-cross fa-xs"></i> Testimonies
+      </li>
+      <li class="requests" @click="handleBtnClick">
+        <i class="fa-solid fa-list fa-xs"></i> Requests
+      </li>
     </ul>
     <!-- for logged in users -->
     <!-- <div>
@@ -56,8 +64,51 @@
 
 <script>
 import HomeBtn from "@/components/HomeBtn";
+import { gsap } from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useRouter } from "vue-router";
 export default {
   components: { HomeBtn },
+  data() {
+    return {
+      router: useRouter(),
+    };
+  },
+  created() {
+    gsap.registerPlugin(ScrollToPlugin);
+  },
+  methods: {
+    handleBtnClick(e) {
+      //console.log("btn home clicked", e.target.className);
+      gsap.to("#app", { duration: 0.5, scrollTo: 0, ease: "power4.out" });
+      switch (e.target.className) {
+        case "request":
+          gsap.to("#app", {
+            duration: 0.5,
+            scrollTo: document
+              .querySelector("#section-request")
+              .getBoundingClientRect().top,
+            ease: "power4.out",
+          });
+          break;
+        case "events":
+          gsap.to("#app", {
+            duration: 0.5,
+            scrollTo: document
+              .querySelector("#section-events")
+              .getBoundingClientRect().top,
+            ease: "power4.out",
+          });
+          break;
+        case "testimony":
+          this.router.push("/testimonies");
+          break;
+        case "requests":
+          this.router.push("/requests");
+          break;
+      }
+    },
+  },
 };
 </script>
 
@@ -66,14 +117,32 @@ nav {
   position: relative;
   width: 100%;
   height: 70px;
+  margin-top: 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   z-index: 10;
+  @media (min-width: 576px) {
+    // RED (SM)
+  }
+  @media (min-width: 768px) {
+    // GREEN (MD)
+    margin-top: 0px;
+  }
+  @media (min-width: 992px) {
+    // BLUE (LG)
+  }
+  @media (min-width: 1200px) {
+    // YELLOW (XL)
+  }
+  @media (min-width: 1400px) {
+    // PURPLE (XXL)
+  }
 
   & .navigation {
     position: absolute;
+    top: -50px;
     width: 100%;
     height: 100%;
     margin: 0;
@@ -82,12 +151,45 @@ nav {
     display: flex;
     justify-content: center;
     align-items: center;
+    @media (min-width: 576px) {
+      // RED (SM)
+    }
+    @media (min-width: 768px) {
+      // GREEN (MD)
+      top: 0px;
+    }
+    @media (min-width: 992px) {
+      // BLUE (LG)
+    }
+    @media (min-width: 1200px) {
+      // YELLOW (XL)
+    }
+    @media (min-width: 1400px) {
+      // PURPLE (XXL)
+    }
     & li {
       cursor: pointer;
-      margin: 12px;
-      font-size: 1.1rem;
+      margin: 7px;
+      font-size: 1rem;
       &:hover {
         color: #45c3ff;
+      }
+      @media (min-width: 576px) {
+        // RED (SM)
+      }
+      @media (min-width: 768px) {
+        // GREEN (MD)
+        margin: 12px;
+        font-size: 1.1rem;
+      }
+      @media (min-width: 992px) {
+        // BLUE (LG)
+      }
+      @media (min-width: 1200px) {
+        // YELLOW (XL)
+      }
+      @media (min-width: 1400px) {
+        // PURPLE (XXL)
       }
     }
   }

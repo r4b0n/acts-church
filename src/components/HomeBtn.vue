@@ -19,7 +19,6 @@ export default {
   },
   methods: {
     handleBtnClick() {
-      console.log("btn home clicked");
       gsap.to("#app", { duration: 0.5, scrollTo: 0, ease: "power4.out" });
     },
   },

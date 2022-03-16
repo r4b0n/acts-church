@@ -1,6 +1,6 @@
 <template>
   <Navbar />
-  <div class="container-fluid home">
+  <div class="home container-fluid">
     <!-- <ul>
       <li v-for="request in requests" :key="request.id">
         <div class="details">

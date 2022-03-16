@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid row my-4">
+  <div id="section-request" class="container-fluid row my-4">
     <!-- SUCCESSFUL_SUBMISSION_MESSAGE -->
     <div class="container-fluid" v-if="submission">
       <div class="alert alert-success" role="alert">
@@ -12,6 +12,7 @@
       @submit.prevent="handleSubmit"
       v-else-if="!submission"
     >
+      <h1>New Request</h1>
       <div class="infos form-group my-3">
         <Info
           ><h2>Fulfilled:</h2>
@@ -24,7 +25,7 @@
           <p>{{ pendingCount }}<i class="fa-solid fa-heart-crack fa-xs"></i></p>
         </Info>
       </div>
-      <h1>New Request</h1>
+
       <!-- NAME -->
       <div class="form-group mb-3">
         <label class="form-label" for="title">Name:</label>
