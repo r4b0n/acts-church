@@ -8,6 +8,7 @@
 <script>
 import Navbar from "@/components/Navbar";
 export default {
+  props: ["loaded"],
   components: { Navbar },
   mounted() {
     let request = document.querySelector(".request");
@@ -17,6 +18,8 @@ export default {
     let requests = document.querySelector(".requests");
     requests.style.color = "#45c3ff";
     requests.style.cursor = "default";
+    let testimony = document.querySelector(".testimony");
+    testimony.style.color = "#707070";
   },
 };
 </script>

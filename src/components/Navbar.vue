@@ -15,10 +15,11 @@
         <i class="fa-solid fa-list fa-xs"></i> Requests
       </li>
     </ul>
+
     <!-- for logged in users -->
-    <!-- <div>
-      <router-link class="btn-login btns" to="/"
-        ><svg viewBox="0 0 40 28" width="40" height="28">
+    <div class="out">
+      <div @click="handleBtnLogout" class="btn-logout btns">
+        <svg viewBox="0 0 40 28" width="40" height="28">
           <path
             class="icon"
             fill="#707070"
@@ -29,9 +30,9 @@
 	C38.8,5.2,40,6.4,40,7.8z M26.4,19.9c0-3.5-2.9-6.4-6.4-6.4s-6.4,2.9-6.4,6.4s2.9,6.4,6.4,6.4S26.4,23.4,26.4,19.9z"
           />
         </svg>
-        <p>Logout</p></router-link
-      >
-    </div> -->
+        <p>Logout</p>
+      </div>
+    </div>
 
     <!-- for logged out users -->
     <div class="out">
@@ -67,6 +68,11 @@ import HomeBtn from "@/components/HomeBtn";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useRouter } from "vue-router";
+
+// firebase imports
+import { auth } from "../firebase/config";
+import { signOut } from "firebase/auth";
+
 export default {
   components: { HomeBtn },
   data() {
@@ -107,6 +113,9 @@ export default {
           this.router.push("/requests");
           break;
       }
+    },
+    handleBtnLogout() {
+      signOut(auth);
     },
   },
 };
@@ -194,6 +203,7 @@ nav {
     }
   }
 
+  & .btn-logout,
   & a {
     color: #707070;
     text-decoration: none;
@@ -238,6 +248,7 @@ nav {
     right: 0;
   }
 
+  & .btn-logout,
   & .btn-login,
   & .btn-signup {
     display: flex;
@@ -247,6 +258,11 @@ nav {
     & svg {
       margin-top: 5px;
     }
+  }
+
+  & .btn-logout {
+    position: absolute;
+    right: 150px;
   }
 }
 </style>

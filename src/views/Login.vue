@@ -4,7 +4,8 @@
     <!-- SUCCESSFUL_SUBMISSION_MESSAGE -->
     <div class="container-fluid" v-if="submission">
       <div class="alert alert-success" role="alert">
-        Thank you! Your request has been successfully sent.
+        <h1>Your logged in!</h1>
+        <p>Back to Home in {{ count }}</p>
       </div>
     </div>
     <!-- SUBMISSION_FORM -->
@@ -65,27 +66,77 @@
           />
         </svg>
       </button>
+      <div class="err py-3" v-if="err">
+        <p>{{ err }}</p>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import { ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { email, required } from "@vuelidate/validators";
+import { useRouter } from "vue-router";
 import HomeBtn from "@/components/HomeBtn";
+
+// firebase imports
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default {
   components: { HomeBtn },
   data() {
-    return {
-      email: "",
-      password: "",
-      submission: false,
-    };
+    return {};
   },
   setup() {
+    const email = ref("");
+    const password = ref("");
+    const err = ref(null);
+    const submission = ref(false);
+    const count = ref(5);
+    const router = useRouter();
+
+    const handleSubmit = async () => {
+      let form = document.querySelector(".needs-validation");
+      form.checkValidity();
+
+      const auth = getAuth();
+
+      signInWithEmailAndPassword(auth, email.value, password.value)
+        .then((user) => {
+          console.log(user);
+          err.value = null;
+          form.classList.add("was-validated");
+          resetForm();
+          submission.value = true;
+        })
+        .catch((error) => {
+          err.value = error.message;
+        });
+    };
+
+    const resetForm = () => {
+      email.value = "";
+      password.value = "";
+      let interv = setInterval(function () {
+        count.value--;
+      }, 1000);
+      let t_out = setTimeout(function () {
+        clearTimeout(t_out);
+        clearInterval(interv);
+        router.push("/");
+      }, 5000);
+    };
+
     return {
       v$: useVuelidate(),
+      email,
+      password,
+      err,
+      submission,
+      handleSubmit,
+      resetForm,
+      count,
     };
   },
   validations() {
@@ -95,30 +146,41 @@ export default {
     };
   },
   methods: {
-    async handleSubmit() {
-      let form = document.querySelector(".needs-validation");
-      form.checkValidity();
-
-      // check for valid form
-      const isFormGood2Go = await this.v$.$validate();
-      if (!isFormGood2Go) {
-        return;
-      }
-
-      form.classList.add("was-validated");
-
-      this.resetForm();
-      this.submission = true;
-    },
-    resetForm() {
-      this.email = "";
-      this.password = "";
-    },
+    // async handleSubmit() {
+    //   let form = document.querySelector(".needs-validation");
+    //   form.checkValidity();
+    //   // check for valid form
+    //   const isFormGood2Go = await this.v$.$validate();
+    //   if (!isFormGood2Go) {
+    //     return;
+    //   }
+    //   await this.signup(this.email, this.password);
+    //   console.log(this.error);
+    //   if (!this.error) {
+    //     this.router.push("/");
+    //   } else {
+    //     console.log(this.auth.error);
+    //     return;
+    //   }
+    //   form.classList.add("was-validated");
+    //   this.resetForm();
+    //   this.submission = true;
+    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.alert {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 form {
   position: absolute;
   width: 100%;
@@ -132,6 +194,14 @@ form {
 
   & h1 {
     margin: 0 0 10px 0;
+  }
+
+  & .err {
+    color: red;
+    font-size: 1rem;
+    & p {
+      margin: 0;
+    }
   }
 }
 .form-control {
