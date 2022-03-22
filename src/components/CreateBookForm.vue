@@ -28,7 +28,7 @@
 
       <!-- NAME -->
       <div class="form-group mb-3">
-        <label class="form-label" for="title">Name:</label>
+        <label class="form-label" for="name">Name:</label>
         <input
           class="form-control"
           :class="{ 'is-invalid': v$.name.$errors.length }"
@@ -59,6 +59,23 @@
         </div>
       </div>
 
+      <!-- ZIPCODE -->
+      <div class="form-group mb-3">
+        <label class="form-label" for="zipcode">Zipcode:</label>
+        <input
+          class="form-control"
+          :class="{ 'is-invalid': v$.zipcode.$errors.length }"
+          @blur="v$.zipcode.$touch"
+          type="tel"
+          name="zipcode"
+          v-model="zipcode"
+          placeholder="#####"
+          maxlength="5"
+          required
+        />
+        <div class="invalid-feedback">Please provide a valid zipcode.</div>
+      </div>
+
       <!-- PHONE -->
       <div class="form-group mb-3">
         <label class="form-label" for="phone">Phone Number:</label>
@@ -67,6 +84,7 @@
           :class="{ 'is-invalid': v$.phone.$errors.length }"
           @blur="v$.phone.$touch"
           type="tel"
+          name="phone"
           v-model="phone"
           v-maska="'(###) ###-####'"
           placeholder="(###) ###-####"
@@ -78,7 +96,24 @@
         </div>
       </div>
 
-      <!-- EMAIL -->
+      <!-- SUBJECT -->
+      <div class="form-group mb-3">
+        <label class="form-label" for="subject">Subject:</label>
+        <input
+          class="form-control"
+          :class="{ 'is-invalid': v$.subject.$errors.length }"
+          @blur="v$.subject.$touch"
+          type="text"
+          name="subject"
+          v-model="subject"
+          required
+          placeholder="100 chars max."
+          maxlength="100"
+        />
+        <div class="invalid-feedback">Please provide a valid subject.</div>
+      </div>
+
+      <!-- REQUEST -->
       <div class="form-group mb-3">
         <label class="form-label" for="request">Request:</label>
         <textarea
@@ -129,7 +164,9 @@ export default {
     return {
       name: "",
       email: "",
+      zipcode: "",
       phone: "",
+      subject: "",
       request: "",
       submission: false,
       fulfilledCount: 0,
@@ -158,7 +195,9 @@ export default {
     return {
       name: { required },
       email: { required, email },
+      zipcode: { required },
       phone: { required },
+      subject: { required },
       request: { required },
     };
   },
@@ -180,9 +219,12 @@ export default {
       await addDoc(colRef, {
         name: this.name,
         email: this.email,
+        zipcode: this.zipcode,
         phone: this.phone,
+        subject: this.subject,
         request: this.request,
         fulfilled: false,
+        assignee: "",
       });
       this.resetForm();
       this.submission = true;
@@ -190,7 +232,9 @@ export default {
     resetForm() {
       this.name = "";
       this.email = "";
+      this.zipcode = "";
       this.phone = "";
+      this.subject = "";
       this.request = "";
     },
   },

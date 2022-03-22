@@ -189,21 +189,7 @@ export default {};
     }
   }
   .btn {
-    color: #f7f7f7;
     background: #000;
-    border-radius: 0;
-    border: 0;
-    width: 212px;
-    height: 55px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
-    padding-top: 8px;
-    font-size: 1.7rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    overflow: hidden;
     position: relative;
 
     & span {
@@ -216,6 +202,7 @@ export default {};
       left: 0;
       width: 55px;
       height: 55px;
+      margin: 0;
       & path {
         fill: white;
       }
@@ -223,6 +210,9 @@ export default {};
 
     &:hover {
       background: red;
+      & svg {
+        animation: none;
+      }
     }
   }
 }

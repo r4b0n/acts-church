@@ -17,7 +17,7 @@
     </ul>
 
     <!-- for logged in users -->
-    <div class="out">
+    <div class="out" v-if="user">
       <div @click="handleBtnLogout" class="btn-logout btns">
         <svg viewBox="0 0 40 28" width="40" height="28">
           <path
@@ -32,10 +32,14 @@
         </svg>
         <p>Logout</p>
       </div>
+      <UserBtn />
     </div>
 
+    <!-- show user email -->
+    <div class="user" v-if="user">{{ user.email }}</div>
+
     <!-- for logged out users -->
-    <div class="out">
+    <div class="out" v-if="!user">
       <router-link class="btn-login btns" to="/login"
         ><svg viewBox="0 0 40 28" width="40" height="28">
           <path
@@ -65,6 +69,8 @@
 
 <script>
 import HomeBtn from "@/components/HomeBtn";
+import UserBtn from "@/components/UserBtn";
+import getUser from "../composables/getUser";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useRouter } from "vue-router";
@@ -74,18 +80,23 @@ import { auth } from "../firebase/config";
 import { signOut } from "firebase/auth";
 
 export default {
-  components: { HomeBtn },
+  components: { HomeBtn, UserBtn },
   data() {
     return {
       router: useRouter(),
     };
+  },
+  setup() {
+    const { user } = getUser();
+    //console.log("User: ", user.value);
+
+    return { user };
   },
   created() {
     gsap.registerPlugin(ScrollToPlugin);
   },
   methods: {
     handleBtnClick(e) {
-      //console.log("btn home clicked", e.target.className);
       gsap.to("#app", { duration: 0.5, scrollTo: 0, ease: "power4.out" });
       switch (e.target.className) {
         case "request":
@@ -147,6 +158,13 @@ nav {
   }
   @media (min-width: 1400px) {
     // PURPLE (XXL)
+  }
+
+  & .user {
+    position: absolute;
+    right: 17px;
+    top: 65px;
+    font-size: 0.7rem;
   }
 
   & .navigation {
@@ -214,6 +232,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
     & p {
       margin: 0;
@@ -262,7 +281,7 @@ nav {
 
   & .btn-logout {
     position: absolute;
-    right: 150px;
+    right: 65px;
   }
 }
 </style>
