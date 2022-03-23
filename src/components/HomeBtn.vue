@@ -56,6 +56,7 @@ a {
 .btn-home {
   margin: 0;
   position: fixed;
+  left: 0;
   z-index: 10;
 }
 </style>

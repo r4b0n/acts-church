@@ -141,7 +141,7 @@ nav {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 10;
   @media (min-width: 576px) {
     // RED (SM)
@@ -161,10 +161,29 @@ nav {
   }
 
   & .user {
-    position: absolute;
-    right: 17px;
-    top: 65px;
+    position: relative;
     font-size: 0.7rem;
+    margin-right: 55px;
+    @media (min-width: 576px) {
+      // RED (SM)
+      margin-right: 0;
+    }
+    @media (min-width: 768px) {
+      // GREEN (MD)
+      position: absolute;
+      right: 19px;
+      top: 68px;
+      margin-right: 0;
+    }
+    @media (min-width: 992px) {
+      // BLUE (LG)
+    }
+    @media (min-width: 1200px) {
+      // YELLOW (XL)
+    }
+    @media (min-width: 1400px) {
+      // PURPLE (XXL)
+    }
   }
 
   & .navigation {

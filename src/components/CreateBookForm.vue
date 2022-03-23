@@ -12,7 +12,7 @@
       @submit.prevent="handleSubmit"
       v-else-if="!submission"
     >
-      <h1>New Request</h1>
+      <h1>Add Request</h1>
       <div class="infos form-group my-3">
         <Info
           ><h2>Fulfilled:</h2>
@@ -25,124 +25,135 @@
           <p>{{ pendingCount }}<i class="fa-solid fa-heart-crack fa-xs"></i></p>
         </Info>
       </div>
-
+      <!-- for logged out users -->
+      <div class="form container-fluid" v-if="!user">
+        <h2>
+          You must <span class="link" @click="handleRedirect">signup</span> or
+          <br />
+          <span class="link" @click="handleRedirect">login</span> to add a
+          request.
+        </h2>
+      </div>
+      <!-- for logged in users -->
       <!-- NAME -->
-      <div class="form-group mb-3">
-        <label class="form-label" for="name">Name:</label>
-        <input
-          class="form-control"
-          :class="{ 'is-invalid': v$.name.$errors.length }"
-          @blur="v$.name.$touch"
-          type="text"
-          name="name"
-          v-model="name"
-          required
-          placeholder="First and Last"
-        />
-        <div class="invalid-feedback">Please provide your full name.</div>
-      </div>
-
-      <!-- EMAIL -->
-      <div class="form-group mb-3">
-        <label class="form-label" for="email">Email:</label>
-        <input
-          class="form-control"
-          :class="{ 'is-invalid': v$.email.$errors.length }"
-          @blur="v$.email.$touch"
-          type="email"
-          name="email"
-          v-model="email"
-          required
-        />
-        <div class="invalid-feedback">
-          Please provide a valid email address.
-        </div>
-      </div>
-
-      <!-- ZIPCODE -->
-      <div class="form-group mb-3">
-        <label class="form-label" for="zipcode">Zipcode:</label>
-        <input
-          class="form-control"
-          :class="{ 'is-invalid': v$.zipcode.$errors.length }"
-          @blur="v$.zipcode.$touch"
-          type="tel"
-          name="zipcode"
-          v-model="zipcode"
-          placeholder="#####"
-          maxlength="5"
-          required
-        />
-        <div class="invalid-feedback">Please provide a valid zipcode.</div>
-      </div>
-
-      <!-- PHONE -->
-      <div class="form-group mb-3">
-        <label class="form-label" for="phone">Phone Number:</label>
-        <input
-          class="form-control"
-          :class="{ 'is-invalid': v$.phone.$errors.length }"
-          @blur="v$.phone.$touch"
-          type="tel"
-          name="phone"
-          v-model="phone"
-          v-maska="'(###) ###-####'"
-          placeholder="(###) ###-####"
-          maxlength="14"
-          required
-        />
-        <div class="invalid-feedback">
-          Please provide a valid telephone number.
-        </div>
-      </div>
-
-      <!-- SUBJECT -->
-      <div class="form-group mb-3">
-        <label class="form-label" for="subject">Subject:</label>
-        <input
-          class="form-control"
-          :class="{ 'is-invalid': v$.subject.$errors.length }"
-          @blur="v$.subject.$touch"
-          type="text"
-          name="subject"
-          v-model="subject"
-          required
-          placeholder="100 chars max."
-          maxlength="100"
-        />
-        <div class="invalid-feedback">Please provide a valid subject.</div>
-      </div>
-
-      <!-- REQUEST -->
-      <div class="form-group mb-3">
-        <label class="form-label" for="request">Request:</label>
-        <textarea
-          class="form-control"
-          :class="{ 'is-invalid': v$.request.$errors.length }"
-          @blur="v$.request.$touch"
-          name="request"
-          v-model="request"
-          rows="7"
-          maxlength="500"
-          required
-          placeholder="500 chars max."
-        ></textarea>
-        <div class="invalid-feedback">Please provide a valid request.</div>
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary mb-3"
-        :disabled="v$.$invalid"
-      >
-        <span>Submit</span>
-        <svg viewBox="0 0 50 50" width="50" height="50">
-          <path
-            d="M48.8,22.9L3,0.2C1.6-0.5,0,0.6,0,2.3v18.8L30.4,25L0,28.9v18.8c0,1.7,1.6,2.8,3,2.1l45.8-22.7
-	C50.4,26.3,50.4,23.7,48.8,22.9z"
+      <div class="form container-fluid" v-if="user">
+        <div class="form-group mb-3">
+          <label class="form-label" for="name">Name:</label>
+          <input
+            class="form-control"
+            :class="{ 'is-invalid': v$.name.$errors.length }"
+            @blur="v$.name.$touch"
+            type="text"
+            name="name"
+            v-model="name"
+            required
+            placeholder="First and Last"
           />
-        </svg>
-      </button>
+          <div class="invalid-feedback">Please provide your full name.</div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-group mb-3">
+          <label class="form-label" for="email">Email:</label>
+          <input
+            class="form-control"
+            :class="{ 'is-invalid': v$.email.$errors.length }"
+            @blur="v$.email.$touch"
+            type="email"
+            name="email"
+            v-model="email"
+            required
+          />
+          <div class="invalid-feedback">
+            Please provide a valid email address.
+          </div>
+        </div>
+
+        <!-- ZIPCODE -->
+        <div class="form-group mb-3">
+          <label class="form-label" for="zipcode">Zipcode:</label>
+          <input
+            class="form-control"
+            :class="{ 'is-invalid': v$.zipcode.$errors.length }"
+            @blur="v$.zipcode.$touch"
+            type="tel"
+            name="zipcode"
+            v-model="zipcode"
+            placeholder="#####"
+            maxlength="5"
+            required
+          />
+          <div class="invalid-feedback">Please provide a valid zipcode.</div>
+        </div>
+
+        <!-- PHONE -->
+        <div class="form-group mb-3">
+          <label class="form-label" for="phone">Phone Number:</label>
+          <input
+            class="form-control"
+            :class="{ 'is-invalid': v$.phone.$errors.length }"
+            @blur="v$.phone.$touch"
+            type="tel"
+            name="phone"
+            v-model="phone"
+            v-maska="'(###) ###-####'"
+            placeholder="(###) ###-####"
+            maxlength="14"
+            required
+          />
+          <div class="invalid-feedback">
+            Please provide a valid telephone number.
+          </div>
+        </div>
+
+        <!-- SUBJECT -->
+        <div class="form-group mb-3">
+          <label class="form-label" for="subject">Subject:</label>
+          <input
+            class="form-control"
+            :class="{ 'is-invalid': v$.subject.$errors.length }"
+            @blur="v$.subject.$touch"
+            type="text"
+            name="subject"
+            v-model="subject"
+            required
+            placeholder="100 chars max."
+            maxlength="100"
+          />
+          <div class="invalid-feedback">Please provide a valid subject.</div>
+        </div>
+
+        <!-- REQUEST -->
+        <div class="form-group mb-3">
+          <label class="form-label" for="request">Request:</label>
+          <textarea
+            class="form-control"
+            :class="{ 'is-invalid': v$.request.$errors.length }"
+            @blur="v$.request.$touch"
+            name="request"
+            v-model="request"
+            rows="7"
+            maxlength="500"
+            required
+            placeholder="500 chars max."
+          ></textarea>
+          <div class="invalid-feedback">Please provide a valid request.</div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary mb-3"
+          :disabled="v$.$invalid"
+        >
+          <span>Submit</span>
+          <svg viewBox="0 0 50 50" width="50" height="50">
+            <path
+              d="M48.8,22.9L3,0.2C1.6-0.5,0,0.6,0,2.3v18.8L30.4,25L0,28.9v18.8c0,1.7,1.6,2.8,3,2.1l45.8-22.7
+	C50.4,26.3,50.4,23.7,48.8,22.9z"
+            />
+          </svg>
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -153,6 +164,8 @@ import { email, required } from "@vuelidate/validators";
 //import { ref } from "vue";
 //import { computed } from "vue";
 import Info from "./Info";
+import getUser from "../composables/getUser";
+import { useRouter } from "vue-router";
 
 // firebase imports
 import { db } from "../firebase/config";
@@ -171,10 +184,13 @@ export default {
       submission: false,
       fulfilledCount: 0,
       pendingCount: 0,
+      router: useRouter(),
     };
   },
   setup() {
+    const { user } = getUser();
     return {
+      user,
       v$: useVuelidate(),
     };
   },
@@ -237,22 +253,32 @@ export default {
       this.subject = "";
       this.request = "";
     },
+    handleRedirect(e) {
+      switch (e.target.innerHTML) {
+        case "signup":
+          this.router.push("/signup");
+          break;
+        case "login":
+          this.router.push("/login");
+          break;
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.container,
-.container-fluid,
-.container-xxl,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm {
-  padding: 0 !important;
-  position: relative;
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & .link {
+    color: #45c3ff;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
 }
-
 .infos {
   display: flex;
   flex-direction: row;
