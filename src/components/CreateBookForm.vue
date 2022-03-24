@@ -27,7 +27,7 @@
       </div>
       <!-- for logged out users -->
       <div class="form container-fluid" v-if="!user">
-        <h2>
+        <h2 class="mt-2">
           You must <span class="link" @click="handleRedirect">signup</span> or
           <br />
           <span class="link" @click="handleRedirect">login</span> to add a
