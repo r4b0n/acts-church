@@ -17,11 +17,12 @@
             id="acts"
             fill="#45C3FF"
             d="M65.8,302.2l-23.6,48.2h9.1l4.7-10h19.7l4.7,10h9L65.8,302.2z M59.1,333.8l6.7-14.4l6.8,14.4
-			H59.1z M129.5,338v9.9c-3.4,2.1-7.5,3.2-12,3.2c-13.2,0-23.9-10.7-23.9-24c0-13.2,10.7-24,23.9-24c4.4,0,8.6,1.1,12,3.2v9.9
-			c-2.7-3.1-6.9-5-11.8-5c-8.8,0-15.5,6.9-15.5,15.8c0,8.9,6.7,15.8,15.5,15.8C122.6,343,126.8,341,129.5,338z M161.9,311.1v39.3
-			h-8.6v-39.3h-14.8V304h38.2v7.1H161.9z M198.9,343.8c4.7,0,8-2.1,8-5.9c0-3-2-4.3-4.9-5.8l-7.7-3.7c-5-2.4-9.3-5.4-9.3-11.9
-			c0-8.1,6.6-13.3,15.2-13.3c5.3,0,10,2.2,12.5,4.6v8.9c-3.6-3.6-8.2-6.2-12.8-6.2c-3.9,0-6.8,1.9-6.8,5.3c0,2.5,1.8,3.9,4.4,5.1
-			l7.2,3.4c6.7,3.1,10.3,6.3,10.3,12.8c0,8.6-7.2,14-16.3,14c-5.9,0-11.1-2.2-14.1-4.6v-8.8C188.6,341,193.6,343.8,198.9,343.8z"
+		H59.1z M129.5,338v9.9c-3.4,2.1-7.5,3.2-12,3.2c-13.2,0-23.9-10.7-23.9-24c0-13.2,10.7-24,23.9-24c4.4,0,8.6,1.1,12,3.2v9.9
+		c-2.7-3.1-6.9-5-11.8-5c-8.8,0-15.5,6.9-15.5,15.8s6.7,15.8,15.5,15.8C122.6,343,126.8,341,129.5,338z M198.9,343.8
+		c4.7,0,8-2.1,8-5.9c0-3-2-4.3-4.9-5.8l-7.7-3.7c-5-2.4-9.3-5.4-9.3-11.9c0-8.1,6.6-13.3,15.2-13.3c5.3,0,10,2.2,12.5,4.6v8.9
+		c-3.6-3.6-8.2-6.2-12.8-6.2c-3.9,0-6.8,1.9-6.8,5.3c0,2.5,1.8,3.9,4.4,5.1l7.2,3.4c6.7,3.1,10.3,6.3,10.3,12.8
+		c0,8.6-7.2,14-16.3,14c-5.9,0-11.1-2.2-14.1-4.6v-8.8C188.6,341,193.6,343.8,198.9,343.8z M161.9,301.1v12h14.8v8h-14.8v29.3h-8.6
+		v-29.3h-14.8v-8h14.8v-12H161.9z"
           />
           <path
             id="of"
@@ -185,18 +186,122 @@
       </g>
     </svg>
     <div class="icon-scroll mt-4"></div>
+    <svg class="fish mt-4" viewBox="0 0 40 70" width="40" height="70">
+      <g id="fish">
+        <path
+          id="fl"
+          fill="none"
+          stroke="#707070"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-miterlimit="10"
+          d="
+		M19.9,68.2c0,0-14.2-10.1-14.2-25.9S16.4,19.7,36.5,1.8"
+        />
+
+        <path
+          id="fr"
+          fill="none"
+          stroke="#707070"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-miterlimit="10"
+          d="
+		M20.1,68.2c0,0,14.2-10.1,14.2-25.9S23.6,19.7,3.5,1.8"
+        />
+
+        <path
+          id="fl_rev"
+          fill="none"
+          stroke="#707070"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-miterlimit="10"
+          d="
+		M36.5,1.8C16.4,19.7,5.8,26.6,5.8,42.3s14.2,25.9,14.2,25.9"
+        />
+
+        <path
+          id="fr_rev"
+          fill="none"
+          stroke="#707070"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-miterlimit="10"
+          d="
+		M3.5,1.8c20.2,17.9,30.8,24.8,30.8,40.6S20.1,68.2,20.1,68.2"
+        />
+      </g>
+    </svg>
   </div>
 </template>
 
 <script>
 import { gsap } from "gsap";
 import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+import { onMounted, onUnmounted } from "@vue/runtime-core";
 export default {
   props: ["loaded"],
   data() {
     return {
       delay: 1.3,
     };
+  },
+  setup() {
+    let tl_fish = null;
+    onMounted(() => {
+      tl_fish = gsap.timeline({ repeat: -1 });
+      tl_fish.add("start", ">");
+      tl_fish.set("#fl,#fr_rev", { opacity: 0, drawSVG: "100%" }, "start");
+      tl_fish.set("#fl_rev,#fr", { opacity: 1, drawSVG: "0%" }, "start");
+      tl_fish.to(
+        "#fl_rev",
+        {
+          duration: 1,
+          drawSVG: "100%",
+          ease: "power0.none",
+        },
+        ">"
+      );
+      tl_fish.to(
+        "#fr",
+        {
+          duration: 1,
+          drawSVG: "100%",
+          ease: "power0.none",
+        },
+        ">"
+      );
+      tl_fish.set("#fl_rev,#fr", { opacity: 0 }, ">");
+      tl_fish.set("#fl,#fr_rev", { opacity: 1 }, ">");
+      tl_fish.to(
+        "#fl",
+        {
+          duration: 1,
+          drawSVG: " 0%",
+          ease: "power0.none",
+        },
+        ">"
+      );
+      tl_fish.to(
+        "#fr_rev",
+        {
+          duration: 1,
+          drawSVG: "0%",
+          ease: "power0.none",
+        },
+        ">"
+      );
+    });
+    onUnmounted(() => {
+      tl_fish.kill();
+      tl_fish = null;
+    });
+    return {};
   },
   created() {
     gsap.registerPlugin(DrawSVGPlugin);
@@ -205,6 +310,7 @@ export default {
     if (this.loaded) {
       this.delay = 0;
     }
+
     let tl = gsap.timeline({
       id: "tl",
       paused: false,
@@ -287,6 +393,7 @@ export default {
   border-radius: 25px;
   display: flex;
   justify-content: center;
+  display: none;
 }
 .icon-scroll::before {
   position: absolute;
