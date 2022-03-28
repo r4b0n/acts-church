@@ -53,20 +53,14 @@
         </div>
 
         <!-- EMAIL -->
-        <div class="form-group mb-3">
-          <label class="form-label" for="email">Email:</label>
+        <div class="form-group">
           <input
-            class="form-control"
-            :class="{ 'is-invalid': v$.email.$errors.length }"
-            @blur="v$.email.$touch"
-            type="email"
+            class="email_hidden"
+            type="hidden"
             name="email"
-            v-model="email"
+            :value="user.email"
             required
           />
-          <div class="invalid-feedback">
-            Please provide a valid email address.
-          </div>
         </div>
 
         <!-- ZIPCODE -->
@@ -160,7 +154,7 @@
 
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import { email, required } from "@vuelidate/validators";
+import { required } from "@vuelidate/validators";
 //import { ref } from "vue";
 //import { computed } from "vue";
 import Info from "./Info";
@@ -176,7 +170,6 @@ export default {
   data() {
     return {
       name: "",
-      email: "",
       zipcode: "",
       phone: "",
       subject: "",
@@ -210,7 +203,6 @@ export default {
   validations() {
     return {
       name: { required },
-      email: { required, email },
       zipcode: { required },
       phone: { required },
       subject: { required },
@@ -234,7 +226,7 @@ export default {
 
       await addDoc(colRef, {
         name: this.name,
-        email: this.email,
+        email: document.querySelector(".email_hidden").value,
         zipcode: this.zipcode,
         phone: this.phone,
         subject: this.subject,
@@ -247,7 +239,6 @@ export default {
     },
     resetForm() {
       this.name = "";
-      this.email = "";
       this.zipcode = "";
       this.phone = "";
       this.subject = "";
