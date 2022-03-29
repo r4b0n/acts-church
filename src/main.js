@@ -5,6 +5,16 @@ import Maska from "maska";
 import "bootstrap";
 import "./scss/custom.scss";
 
-const app = createApp(App).use(router);
-app.use(Maska);
-app.mount("#app");
+// firebase imports
+import { auth } from "./firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+
+let app;
+
+onAuthStateChanged(auth, () => {
+  if (!app) {
+    app = createApp(App).use(router);
+    app.use(Maska);
+    app.mount("#app");
+  }
+});

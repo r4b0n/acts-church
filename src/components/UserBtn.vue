@@ -1,5 +1,5 @@
 <template>
-  <router-link class="btn-user btns" to="/" @click="handleBtnClick">
+  <router-link class="btn-user btns" to="/user" @click="handleBtnClick">
     <svg viewBox="0 0 70 70" width="70" height="70">
       <path
         class="icon"

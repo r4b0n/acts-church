@@ -6,6 +6,7 @@ import Login from "../views/Login.vue";
 import Signup from "../views/Signup.vue";
 import Testimonies from "../views/Testimonies.vue";
 import Requests from "../views/Requests.vue";
+import User from "../views/User.vue";
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
     path: "/requests",
     name: "Requests",
     component: Requests,
+  },
+  {
+    path: "/user",
+    name: "User",
+    component: User,
   },
 ];
 

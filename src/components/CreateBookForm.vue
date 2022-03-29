@@ -8,6 +8,7 @@
     </div>
     <!-- SUBMISSION_FORM -->
     <form
+      id="request_form"
       class="needs-validation"
       @submit.prevent="handleSubmit"
       v-else-if="!submission"
@@ -165,6 +166,9 @@ import { useRouter } from "vue-router";
 import { db } from "../firebase/config";
 import { getDocs, addDoc, collection } from "firebase/firestore";
 
+// emailjs import
+import emailjs from "@emailjs/browser";
+
 export default {
   components: { Info },
   data() {
@@ -182,6 +186,7 @@ export default {
   },
   setup() {
     const { user } = getUser();
+
     return {
       user,
       v$: useVuelidate(),
@@ -234,6 +239,30 @@ export default {
         fulfilled: false,
         assignee: "",
       });
+      const templateParams = {
+        from_name: "Acts of the Church",
+        action: "Request Added",
+        email: document.querySelector(".email_hidden").value,
+        reply_to: "ryanrabon@actsofthechurch.org",
+        to_name: this.name,
+        message:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi autem consectetur laborum blanditiis laudantium nostrum suscipit ut harum illo, tenetur, ipsam magni officia maxime? Quibusdam cupiditate dolore praesentium assumenda suscipit, adipisci veritatis in repellat corporis a totam iste aliquam doloremque deleniti voluptate omnis? Ab, laudantium placeat eius harum, perspiciatis eveniet sint obcaecati accusantium cumque at eum nostrum sunt officia ducimus quo amet. Sequi facilis ipsam earum",
+      };
+      emailjs
+        .send(
+          "service_2al5aml",
+          "template_all",
+          templateParams,
+          "ugyQI0jOpCHu-bCYO"
+        )
+        .then(
+          (response) => {
+            console.log("SUCCESS!", response.status, response.text);
+          },
+          (err) => {
+            console.log("FAILED...", err);
+          }
+        );
       this.resetForm();
       this.submission = true;
     },
