@@ -103,8 +103,9 @@ export default {
       const auth = getAuth();
 
       signInWithEmailAndPassword(auth, email.value, password.value)
-        .then((user) => {
-          console.log(user);
+        .then(() => {
+          // log from user in params...removed for production
+          //console.log(user);
           err.value = null;
           form.classList.add("was-validated");
           resetForm();

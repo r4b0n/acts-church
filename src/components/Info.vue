@@ -11,7 +11,7 @@ export default {};
 <style lang="scss" scoped>
 .info {
   background: white;
-  width: 47.5%;
+  width: 48.5%;
   margin: 0;
   padding: 0;
   display: flex;

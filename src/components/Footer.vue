@@ -1,6 +1,8 @@
 <template>
   <div class="footer container-fluid py-4">
-    <h1>Footer</h1>
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/acts-church-42bf9.appspot.com/o/logo_copy_footer.png?alt=media&token=13b34c12-b9ad-47c3-bba4-870eef90c4de"
+    />
   </div>
 </template>
 
@@ -18,6 +20,9 @@ export default {};
   align-items: center;
   & p {
     max-width: 750px;
+  }
+  & img {
+    width: 150px;
   }
 }
 </style>

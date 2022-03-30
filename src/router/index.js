@@ -8,6 +8,18 @@ import Testimonies from "../views/Testimonies.vue";
 import Requests from "../views/Requests.vue";
 import User from "../views/User.vue";
 
+// firebase imports
+import { auth } from "../firebase/config";
+
+const requireAuth = (to, from, next) => {
+  let user = auth.currentUser;
+  if (!user) {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
+};
+
 const routes = [
   {
     path: "/",
@@ -38,6 +50,7 @@ const routes = [
     path: "/user",
     name: "User",
     component: User,
+    beforeEnter: requireAuth,
   },
 ];
 

@@ -229,24 +229,26 @@ export default {
 
       const colRef = collection(db, "requests");
 
+      const { user } = getUser();
+
       await addDoc(colRef, {
         name: this.name,
-        email: document.querySelector(".email_hidden").value,
+        email: user.value.email,
         zipcode: this.zipcode,
         phone: this.phone,
         subject: this.subject,
         request: this.request,
         fulfilled: false,
         assignee: "",
+        userID: user.value.uid,
       });
       const templateParams = {
         from_name: "Acts of the Church",
         action: "Request Added",
-        email: document.querySelector(".email_hidden").value,
+        email: user.value.email,
         reply_to: "ryanrabon@actsofthechurch.org",
         to_name: this.name,
-        message:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi autem consectetur laborum blanditiis laudantium nostrum suscipit ut harum illo, tenetur, ipsam magni officia maxime? Quibusdam cupiditate dolore praesentium assumenda suscipit, adipisci veritatis in repellat corporis a totam iste aliquam doloremque deleniti voluptate omnis? Ab, laudantium placeat eius harum, perspiciatis eveniet sint obcaecati accusantium cumque at eum nostrum sunt officia ducimus quo amet. Sequi facilis ipsam earum",
+        message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
       };
       emailjs
         .send(
@@ -306,7 +308,7 @@ export default {
   align-items: center;
   padding: 0;
   & h2 {
-    padding: 20px 20px 0 20px;
+    padding: 15px 15px 0 15px;
     margin: 0;
     text-transform: uppercase;
     @media (min-width: 576px) {
@@ -314,7 +316,7 @@ export default {
     }
     @media (min-width: 768px) {
       // GREEN (MD)
-      padding: 20px;
+      padding: 15px;
     }
     @media (min-width: 992px) {
       // BLUE (LG)
@@ -330,14 +332,15 @@ export default {
     color: #45c3ff;
     font-size: 2rem;
     font-weight: 500;
+    line-height: 2rem;
     margin: 0;
-    padding: 0 0 20px 0;
+    padding: 0 0 15px 0;
     @media (min-width: 576px) {
       // RED (SM)
     }
     @media (min-width: 768px) {
       // GREEN (MD)
-      padding: 20px 20px 20px 0;
+      padding: 15px 15px 15px 0;
     }
     @media (min-width: 992px) {
       // BLUE (LG)

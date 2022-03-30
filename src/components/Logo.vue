@@ -191,49 +191,46 @@
         <path
           id="fl"
           fill="none"
-          stroke="#707070"
+          stroke="#45C3FF"
           stroke-width="3"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-miterlimit="10"
           d="
-		M19.9,68.2c0,0-14.2-10.1-14.2-25.9S16.4,19.7,36.5,1.8"
+		M19.9,68.2c0,0-14.2-10.1-14.2-25.9s8.7-22.6,28.8-40.5"
         />
-
         <path
           id="fr"
           fill="none"
-          stroke="#707070"
+          stroke="#45C3FF"
           stroke-width="3"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-miterlimit="10"
           d="
-		M20.1,68.2c0,0,14.2-10.1,14.2-25.9S23.6,19.7,3.5,1.8"
+		M5.5,1.8c20.1,17.9,28.8,24.7,28.8,40.5S20.1,68.2,20.1,68.2"
         />
-
         <path
           id="fl_rev"
           fill="none"
-          stroke="#707070"
+          stroke="#45C3FF"
           stroke-width="3"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-miterlimit="10"
           d="
-		M36.5,1.8C16.4,19.7,5.8,26.6,5.8,42.3s14.2,25.9,14.2,25.9"
+		M34.5,1.8C14.4,19.7,5.8,26.6,5.8,42.3S20,68.2,20,68.2"
         />
-
         <path
           id="fr_rev"
           fill="none"
-          stroke="#707070"
+          stroke="#45C3FF"
           stroke-width="3"
           stroke-linecap="round"
           stroke-linejoin="round"
           stroke-miterlimit="10"
           d="
-		M3.5,1.8c20.2,17.9,30.8,24.8,30.8,40.6S20.1,68.2,20.1,68.2"
+		M20.1,68.2c0,0,14.2-10,14.2-25.8S25.7,19.7,5.5,1.8"
         />
       </g>
     </svg>

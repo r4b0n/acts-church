@@ -62,6 +62,7 @@ import getUser from "../composables/getUser";
 import { gsap } from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useRouter } from "vue-router";
+import { watchEffect } from "vue";
 
 export default {
   components: { HomeBtn, UserBtn, LogoutBtn },
@@ -72,7 +73,12 @@ export default {
   },
   setup() {
     const { user } = getUser();
-    //console.log("User: ", user.value);
+
+    watchEffect(() => {
+      if (!user.value) {
+        console.log("No user logged in.");
+      }
+    });
 
     return { user };
   },
@@ -142,6 +148,7 @@ nav {
   }
 
   & .user {
+    color: #45c3ff;
     position: relative;
     font-size: 0.7rem;
     margin-right: 55px;
