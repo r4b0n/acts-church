@@ -271,7 +271,7 @@ export default {
           drawSVG: "100%",
           ease: "power0.none",
         },
-        ">"
+        ">-.5"
       );
       tl_fish.set("#fl_rev,#fr", { opacity: 0 }, ">");
       tl_fish.set("#fl,#fr_rev", { opacity: 1 }, ">");
@@ -282,7 +282,7 @@ export default {
           drawSVG: " 0%",
           ease: "power0.none",
         },
-        ">"
+        ">+.5"
       );
       tl_fish.to(
         "#fr_rev",
@@ -291,7 +291,7 @@ export default {
           drawSVG: "0%",
           ease: "power0.none",
         },
-        ">"
+        ">-.5"
       );
     });
     onUnmounted(() => {

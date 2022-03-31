@@ -2,6 +2,13 @@
   <Navbar />
   <div class="requests-all container-fluid">
     <h1>Requests</h1>
+    <p class="info px-3">
+      Lorem ipsum dolor sit amet
+      <i style="color: #45c3ff" class="fa-solid fa-heart-crack fa-sm"></i>
+      consectetur adipisicing elit. Quasi autem consectetur laborum blanditiis
+      laudantium nostrum suscipit ut harum illo, tenetur, ipsam magni officia
+      maxime?
+    </p>
     <ul v-if="requests">
       <li v-for="request in requests" :key="request.id">
         <!-- <h3>{{ request.name }}</h3> -->
@@ -12,31 +19,34 @@
         </div>
         <div class="help">
           <i
-            class="fa-solid fa-handshake-angle fa-2xl"
+            class="fa-solid fa-heart-crack fa-2xl"
             @click="handleAssignment(request)"
           ></i>
         </div>
       </li>
     </ul>
-    <div class="container-fluid" v-if="requests.length === 0">
+    <div class="container-fluid" v-if="requests && requests.length === 0">
       <h2>There are no requests.</h2>
     </div>
   </div>
+  <Modal><h1>Modal</h1></Modal>
 </template>
 
 <script>
 import Navbar from "@/components/Navbar";
+import Modal from "@/components/Modal";
 import getCollection from "@/composables/getCollection";
 import getUser from "@/composables/getUser";
 
 export default {
   props: ["loaded"],
-  components: { Navbar },
+  components: { Navbar, Modal },
   setup() {
     const { user } = getUser();
 
     const { docs: requests } = getCollection(
       "requests",
+      ["fulfilled", "==", false],
       ["assignee", "==", ""],
       ["zipcode", "==", "81101"]
     );
@@ -62,10 +72,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal {
+  display: none;
+}
 .requests-all {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   & h2 {
     color: #45c3ff;
+  }
+  & .info {
+    max-width: 750px;
   }
   & ul {
     list-style: none;
@@ -110,21 +130,58 @@ export default {
         }
       }
       & .req {
-        padding: 10px 80px 10px 10px;
+        padding: 10px 10px 60px 10px;
+        @media (min-width: 576px) {
+          // RED (SM)
+        }
+        @media (min-width: 768px) {
+          // GREEN (MD)
+          padding: 10px 60px 10px 10px;
+        }
+        @media (min-width: 992px) {
+          // BLUE (LG)
+        }
+        @media (min-width: 1200px) {
+          // YELLOW (XL)
+        }
+        @media (min-width: 1400px) {
+          // PURPLE (XXL)
+        }
       }
       & .help {
         display: flex;
         justify-content: center;
         align-items: center;
-        border-left: 1px dashed #707070;
+        border-top: 1px dashed #707070;
         position: absolute;
-        right: 0;
-        width: 70px;
-        height: 100%;
+        bottom: 0;
+        width: 100%;
+        height: 50px;
+        @media (min-width: 576px) {
+          // RED (SM)
+        }
+        @media (min-width: 768px) {
+          // GREEN (MD)
+          border-top: unset;
+          border-left: 1px dashed #707070;
+          right: 0;
+          width: 50px;
+          height: 100%;
+        }
+        @media (min-width: 992px) {
+          // BLUE (LG)
+        }
+        @media (min-width: 1200px) {
+          // YELLOW (XL)
+        }
+        @media (min-width: 1400px) {
+          // PURPLE (XXL)
+        }
         & i {
+          color: #45c3ff;
           cursor: pointer;
           &:hover {
-            color: #45c3ff;
+            color: red;
           }
         }
       }
