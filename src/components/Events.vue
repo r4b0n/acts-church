@@ -7,7 +7,10 @@
         <img src="@/assets/img-event.png" class="venue-logo" />
         <div class="info">
           <h2>
-            <i class="fa-solid fa-calendar-days fa-xs" style="color: black"></i>
+            <i
+              class="fa-solid fa-calendar-days fa-xs"
+              style="color: #352611"
+            ></i>
             May 1st 2022
           </h2>
           <p>
@@ -50,20 +53,20 @@ export default {};
 .events {
   position: relative;
   color: #f7f7f7;
-  background: #478dff;
+  background: #8a6c43;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   & .pattern {
     background: transparent url("../assets/img-pattern-events.png") 0 0 repeat;
+    background-size: 200px 200px;
     position: absolute;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    opacity: 0.15;
-    mix-blend-mode: multiply;
+    opacity: 0.7;
   }
   & .content {
     position: relative;
@@ -171,7 +174,7 @@ export default {};
           // PURPLE (XXL)
         }
         & p {
-          color: black;
+          color: #352611;
           margin: 0;
           padding: 0;
           text-transform: uppercase;
@@ -189,7 +192,7 @@ export default {};
     }
   }
   .btn {
-    background: #000;
+    background: #574226;
     position: relative;
 
     & span {
@@ -209,7 +212,7 @@ export default {};
     }
 
     &:hover {
-      background: red;
+      background: #352611;
       & svg {
         animation: none;
       }

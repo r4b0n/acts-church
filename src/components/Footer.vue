@@ -1,7 +1,7 @@
 <template>
   <div class="footer container-fluid py-4">
     <img
-      src="https://firebasestorage.googleapis.com/v0/b/acts-church-42bf9.appspot.com/o/logo_copy_footer.png?alt=media&token=9d18e7e4-cf82-4e0d-b456-6d99d6e9271c"
+      src="https://firebasestorage.googleapis.com/v0/b/acts-church-42bf9.appspot.com/o/logo_copy.png?alt=media&token=ff5ed027-ab6c-457a-b3bc-ba2e160f7445"
     />
   </div>
 </template>

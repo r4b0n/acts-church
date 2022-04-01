@@ -43,6 +43,25 @@ a {
 }
 
 .btns {
+  & .icon {
+    fill: #45c3ff;
+    @media (min-width: 576px) {
+      // RED (SM)
+      fill: #707070;
+    }
+    @media (min-width: 768px) {
+      // GREEN (MD)
+    }
+    @media (min-width: 992px) {
+      // BLUE (LG)
+    }
+    @media (min-width: 1200px) {
+      // YELLOW (XL)
+    }
+    @media (min-width: 1400px) {
+      // PURPLE (XXL)
+    }
+  }
   &:hover {
     & .icon {
       fill: #45c3ff;

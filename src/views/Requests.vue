@@ -29,33 +29,82 @@
       <h2>There are no requests.</h2>
     </div>
   </div>
-  <Modal><h1>Modal</h1></Modal>
+  <Modal v-if="showModal">
+    <div class="content container-fluid">
+      <div v-if="user">
+        <h2>Confirm you want to<br />fulfill this request.</h2>
+        <div class="btns">
+          <div class="btn">Yes<i class="fa-solid fa-heart fa-lg"></i></div>
+          <div class="btn" @click="handleModalClose">
+            No<i class="fa-solid fa-xmark fa-2xl"></i>
+          </div>
+        </div>
+      </div>
+      <div v-if="!user">
+        <h2>
+          You must <span class="link" @click="handleRedirect">signup</span> or
+          <br />
+          <span class="link" @click="handleRedirect">login</span> to fulfill a
+          request.
+        </h2>
+      </div>
+      <i class="fa-solid fa-xmark fa-2xl" @click="handleModalClose"></i>
+    </div>
+  </Modal>
 </template>
 
 <script>
+import { ref } from "vue";
 import Navbar from "@/components/Navbar";
 import Modal from "@/components/Modal";
 import getCollection from "@/composables/getCollection";
 import getUser from "@/composables/getUser";
+import { useRouter } from "vue-router";
 
 export default {
   props: ["loaded"],
   components: { Navbar, Modal },
   setup() {
+    const showModal = ref(false);
     const { user } = getUser();
+    const router = useRouter();
+    const curRequest = ref(null);
 
     const { docs: requests } = getCollection(
       "requests",
       ["fulfilled", "==", false],
       ["assignee", "==", ""],
-      ["zipcode", "==", "81101"]
+      ["zipcode", "==", 81101]
     );
 
     const handleAssignment = (request) => {
-      console.log("Assignment action", request);
+      curRequest.value = request;
+      showModal.value = !showModal.value;
     };
 
-    return { user, requests, handleAssignment };
+    const handleModalClose = () => {
+      showModal.value = !showModal.value;
+    };
+
+    const handleRedirect = (e) => {
+      switch (e.target.innerHTML) {
+        case "signup":
+          router.push("/signup");
+          break;
+        case "login":
+          router.push("/login");
+          break;
+      }
+    };
+
+    return {
+      showModal,
+      user,
+      requests,
+      handleAssignment,
+      handleModalClose,
+      handleRedirect,
+    };
   },
   mounted() {
     let request = document.querySelector(".request");
@@ -73,7 +122,70 @@ export default {
 
 <style lang="scss" scoped>
 .modal {
-  display: none;
+  padding: 20px !important;
+  & .content {
+    background: white;
+    position: relative;
+    width: 100%;
+    max-width: 750px;
+    padding: 50px 50px !important;
+    border: 1px dashed #707070;
+    @media (min-width: 576px) {
+      // RED (SM)
+      width: auto;
+    }
+    @media (min-width: 768px) {
+      // GREEN (MD)
+    }
+    @media (min-width: 992px) {
+      // BLUE (LG)
+    }
+    @media (min-width: 1200px) {
+      // YELLOW (XL)
+    }
+    @media (min-width: 1400px) {
+      // PURPLE (XXL)
+    }
+    & .btns {
+      display: flex;
+      justify-content: space-evenly;
+    }
+    & h2 {
+      line-height: 2.5rem;
+      margin: 0;
+      & .link {
+        color: #45c3ff;
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+    }
+    & i {
+      cursor: pointer;
+      position: absolute;
+      top: 7px;
+      right: 9px;
+      line-height: 1.5rem;
+      &:hover {
+        color: #45c3ff;
+      }
+    }
+    & .btn {
+      position: relative;
+      width: auto;
+      padding: 0 20px;
+      margin-top: 20px;
+      &:nth-child(2) {
+        margin-left: 20px;
+      }
+      & i {
+        position: relative;
+        top: unset;
+        right: unset;
+        color: red;
+        margin-left: 10px;
+      }
+    }
+  }
 }
 .requests-all {
   position: relative;

@@ -234,7 +234,7 @@ export default {
       await addDoc(colRef, {
         name: this.name,
         email: user.value.email,
-        zipcode: this.zipcode,
+        zipcode: parseInt(this.zipcode),
         phone: this.phone,
         subject: this.subject,
         request: this.request,
