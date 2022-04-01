@@ -10,7 +10,7 @@ export default {};
 
 <style lang="scss" scoped>
 .modal {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: 100%;

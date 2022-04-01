@@ -66,7 +66,7 @@ export default {};
     height: 100%;
     top: 0;
     left: 0;
-    opacity: 0.7;
+    opacity: 0.85;
   }
   & .content {
     position: relative;

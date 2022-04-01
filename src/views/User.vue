@@ -4,10 +4,8 @@
   <LogoutBtn />
   <div class="user container-fluid">
     <h1>Your Requests</h1>
-    <ul v-if="requests">
+    <ul class="req" v-if="requests">
       <li v-for="request in requests" :key="request.id">
-        <!-- <h3>{{ request.name }}</h3> -->
-        <!-- <p>{{ request.email }}</p> -->
         <div class="req">
           <p class="mb-2">{{ request.subject }}</p>
           <p>{{ request.request }}</p>
@@ -21,7 +19,25 @@
       </li>
     </ul>
     <div class="container-fluid" v-if="requests && requests.length === 0">
-      <h2>You have no requests.</h2>
+      <h2>You have no Requests.</h2>
+    </div>
+    <h1 style="color: red">Assignments</h1>
+    <ul class="ass" v-if="assignments">
+      <li v-for="assignment in assignments" :key="assignment.id">
+        <div class="req">
+          <p class="mb-2">{{ assignment.subject }}</p>
+          <p>{{ assignment.request }}</p>
+        </div>
+        <div class="trash">
+          <i
+            class="fa-solid fa-trash-can fa-2xl"
+            @click="handleReassignment(assignment)"
+          ></i>
+        </div>
+      </li>
+    </ul>
+    <div class="container-fluid" v-if="assignments && assignments.length === 0">
+      <h2>You have no Assignments.</h2>
     </div>
   </div>
 </template>
@@ -34,7 +50,7 @@ import getUser from "@/composables/getUser";
 
 // firebase imports
 import { db } from "../firebase/config";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 
 export default {
   props: ["loaded"],
@@ -48,9 +64,22 @@ export default {
       user.value.uid,
     ]);
 
+    const { docs: assignments } = getCollection("requests", [
+      "assignee",
+      "==",
+      user.value.email,
+    ]);
+
     const handleDelete = (request) => {
       const docRef = doc(db, "requests", request.id);
       deleteDoc(docRef);
+    };
+
+    const handleReassignment = (assignment) => {
+      const docRef = doc(db, "requests", assignment.id);
+      updateDoc(docRef, {
+        assignee: "",
+      });
     };
 
     // const colRef = collection(db, "requests");
@@ -63,7 +92,7 @@ export default {
     //   requests.value = docs;
     // });
 
-    return { user, requests, handleDelete };
+    return { user, requests, assignments, handleDelete, handleReassignment };
   },
 };
 </script>
@@ -78,6 +107,31 @@ export default {
   margin-top: 20px;
   & h2 {
     color: #45c3ff;
+  }
+  & .ass {
+    & li {
+      border: 1px dashed red;
+    }
+    & .trash {
+      border-top: 1px dashed red;
+      @media (min-width: 576px) {
+        // RED (SM)
+      }
+      @media (min-width: 768px) {
+        // GREEN (MD)
+        border-top: unset;
+        border-left: 1px dashed red;
+      }
+      @media (min-width: 992px) {
+        // BLUE (LG)
+      }
+      @media (min-width: 1200px) {
+        // YELLOW (XL)
+      }
+      @media (min-width: 1400px) {
+        // PURPLE (XXL)
+      }
+    }
   }
   & ul {
     list-style: none;

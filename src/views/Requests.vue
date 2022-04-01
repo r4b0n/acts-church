@@ -32,23 +32,27 @@
   <Modal v-if="showModal">
     <div class="content container-fluid">
       <div v-if="user">
-        <h2>Confirm you want to<br />fulfill this request.</h2>
+        <h2>You want to<br />Fulfill this Request.</h2>
         <div class="btns">
-          <div class="btn">Yes<i class="fa-solid fa-heart fa-lg"></i></div>
+          <div class="btn" @click="handleConfirmation">
+            Yes<i class="fa-solid fa-heart fa-md"></i>
+          </div>
           <div class="btn" @click="handleModalClose">
-            No<i class="fa-solid fa-xmark fa-2xl"></i>
+            No<i class="fa-solid fa-xmark fa-xl"></i>
           </div>
         </div>
       </div>
       <div v-if="!user">
         <h2>
-          You must <span class="link" @click="handleRedirect">signup</span> or
-          <br />
-          <span class="link" @click="handleRedirect">login</span> to fulfill a
-          request.
+          You must <span class="link" @click="handleRedirect">signup</span>
+          <br />or <span class="link" @click="handleRedirect">login</span> to
+          fulfill<br />a Request.
         </h2>
       </div>
       <i class="fa-solid fa-xmark fa-2xl" @click="handleModalClose"></i>
+      <div class="err mt-3" v-if="showErr">
+        You cannot Fulfill your own Request.
+      </div>
     </div>
   </Modal>
 </template>
@@ -61,11 +65,16 @@ import getCollection from "@/composables/getCollection";
 import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
 
+// firebase imports
+import { db } from "../firebase/config";
+import { doc, updateDoc } from "firebase/firestore";
+
 export default {
   props: ["loaded"],
   components: { Navbar, Modal },
   setup() {
     const showModal = ref(false);
+    const showErr = ref(false);
     const { user } = getUser();
     const router = useRouter();
     const curRequest = ref(null);
@@ -73,8 +82,8 @@ export default {
     const { docs: requests } = getCollection(
       "requests",
       ["fulfilled", "==", false],
-      ["assignee", "==", ""],
-      ["zipcode", "==", 81101]
+      ["assignee", "==", ""]
+      // ["zipcode", "==", 81101]
     );
 
     const handleAssignment = (request) => {
@@ -82,8 +91,21 @@ export default {
       showModal.value = !showModal.value;
     };
 
+    const handleConfirmation = () => {
+      if (curRequest.value.email != user.value.email) {
+        const docRef = doc(db, "requests", curRequest.value.id);
+        updateDoc(docRef, {
+          assignee: user.value.email,
+        });
+        router.push("/user");
+      } else {
+        showErr.value = true;
+      }
+    };
+
     const handleModalClose = () => {
       showModal.value = !showModal.value;
+      showErr.value = false;
     };
 
     const handleRedirect = (e) => {
@@ -99,9 +121,11 @@ export default {
 
     return {
       showModal,
+      showErr,
       user,
       requests,
       handleAssignment,
+      handleConfirmation,
       handleModalClose,
       handleRedirect,
     };
@@ -175,7 +199,10 @@ export default {
       padding: 0 20px;
       margin-top: 20px;
       &:nth-child(2) {
-        margin-left: 20px;
+        margin-left: 15px;
+      }
+      &:hover {
+        color: white;
       }
       & i {
         position: relative;
@@ -184,6 +211,9 @@ export default {
         color: red;
         margin-left: 10px;
       }
+    }
+    & .err {
+      color: red;
     }
   }
 }
