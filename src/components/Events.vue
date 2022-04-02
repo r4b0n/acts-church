@@ -60,6 +60,7 @@ export default {};
   align-items: center;
   & .pattern {
     background: transparent url("../assets/img-pattern-events.png") 0 0 repeat;
+    background-position: center;
     background-size: 200px 200px;
     position: absolute;
     width: 100%;

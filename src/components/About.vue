@@ -65,6 +65,7 @@ export default {};
 .about {
   color: #f7f7f7;
   background: transparent url("../assets/img-pattern.png") 0 0 repeat;
+  background-position: center;
   display: flex;
   flex-direction: column;
   justify-content: center;

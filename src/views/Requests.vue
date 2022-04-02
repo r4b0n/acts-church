@@ -22,16 +22,20 @@
             class="fa-solid fa-heart-crack fa-2xl"
             @click="handleAssignment(request)"
           ></i>
+          <i
+            class="fa-solid fa-triangle-exclamation fa-2xl"
+            @click="handleFlag(request)"
+          ></i>
         </div>
       </li>
     </ul>
     <div class="container-fluid" v-if="requests && requests.length === 0">
-      <h2>There are no requests.</h2>
+      <h2>There are no Requests.</h2>
     </div>
   </div>
   <Modal v-if="showModal">
     <div class="content container-fluid">
-      <div v-if="user">
+      <div v-if="user && !flag">
         <h2>You want to<br />Fulfill this Request.</h2>
         <div class="btns">
           <div class="btn" @click="handleConfirmation">
@@ -42,12 +46,15 @@
           </div>
         </div>
       </div>
-      <div v-if="!user">
+      <div v-if="!user && !flag">
         <h2>
           You must <span class="link" @click="handleRedirect">signup</span>
           <br />or <span class="link" @click="handleRedirect">login</span> to
-          fulfill<br />a Request.
+          Fulfill<br />a Request.
         </h2>
+      </div>
+      <div v-if="flag">
+        <h2>Report as<br />innapropriate.</h2>
       </div>
       <i class="fa-solid fa-xmark fa-2xl" @click="handleModalClose"></i>
       <div class="err mt-3" v-if="showErr">
@@ -75,6 +82,7 @@ export default {
   setup() {
     const showModal = ref(false);
     const showErr = ref(false);
+    const flag = ref(false);
     const { user } = getUser();
     const router = useRouter();
     const curRequest = ref(null);
@@ -106,6 +114,7 @@ export default {
     const handleModalClose = () => {
       showModal.value = !showModal.value;
       showErr.value = false;
+      flag.value = false;
     };
 
     const handleRedirect = (e) => {
@@ -119,15 +128,24 @@ export default {
       }
     };
 
+    const handleFlag = (request) => {
+      console.log("Flagged: ", request);
+      curRequest.value = request;
+      showModal.value = !showModal.value;
+      flag.value = true;
+    };
+
     return {
       showModal,
       showErr,
+      flag,
       user,
       requests,
       handleAssignment,
       handleConfirmation,
       handleModalClose,
       handleRedirect,
+      handleFlag,
     };
   },
   mounted() {
@@ -292,7 +310,8 @@ export default {
       }
       & .help {
         display: flex;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-around;
         align-items: center;
         border-top: 1px dashed #707070;
         position: absolute;
@@ -304,6 +323,7 @@ export default {
         }
         @media (min-width: 768px) {
           // GREEN (MD)
+          flex-direction: column;
           border-top: unset;
           border-left: 1px dashed #707070;
           right: 0;
@@ -324,6 +344,12 @@ export default {
           cursor: pointer;
           &:hover {
             color: red;
+          }
+          &:nth-child(2) {
+            color: black;
+            &:hover {
+              color: red;
+            }
           }
         }
       }
