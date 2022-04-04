@@ -9,6 +9,20 @@
       laudantium nostrum suscipit ut harum illo, tenetur, ipsam magni officia
       maxime?
     </p>
+    <div class="filter container-fluid mb-4">
+      <h2 style="line-height: 1rem; margin-right: 5px; margin-bottom: 0">
+        <i class="fa-solid fa-filter fa-xs"></i>
+      </h2>
+      <h2 style="line-height: 1rem; margin-right: 10px; margin-bottom: 0">
+        Filter
+      </h2>
+      <input
+        class="form-control"
+        type="tel"
+        placeholder="Zipcode"
+        maxlength="5"
+      />
+    </div>
     <ul v-if="requests">
       <li v-for="request in requests" :key="request.id">
         <div class="req">
@@ -177,6 +191,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.filter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 750px;
+  padding: 0 20px !important;
+  @media (min-width: 576px) {
+    // RED (SM)
+  }
+  @media (min-width: 768px) {
+    // GREEN (MD)
+    padding: 0 !important;
+  }
+  @media (min-width: 992px) {
+    // BLUE (LG)
+  }
+  @media (min-width: 1200px) {
+    // YELLOW (XL)
+  }
+  @media (min-width: 1400px) {
+    // PURPLE (XXL)
+  }
+}
 .modal {
   padding: 20px !important;
   & .content {
