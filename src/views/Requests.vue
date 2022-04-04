@@ -11,8 +11,6 @@
     </p>
     <ul v-if="requests">
       <li v-for="request in requests" :key="request.id">
-        <!-- <h3>{{ request.name }}</h3> -->
-        <!-- <p>{{ request.email }}</p> -->
         <div class="req">
           <p class="mb-2">{{ request.subject }}</p>
           <p>{{ request.request }}</p>
@@ -22,10 +20,11 @@
             class="fa-solid fa-heart-crack fa-2xl"
             @click="handleAssignment(request)"
           ></i>
-          <i
+          <!-- <i
             class="fa-solid fa-triangle-exclamation fa-2xl"
             @click="handleFlag(request)"
-          ></i>
+          ></i> -->
+          <ReportBtn @click="handleFlag(request)" />
         </div>
       </li>
     </ul>
@@ -46,15 +45,23 @@
           </div>
         </div>
       </div>
-      <div v-if="!user && !flag">
+      <div v-if="!user">
         <h2>
           You must <span class="link" @click="handleRedirect">signup</span>
           <br />or <span class="link" @click="handleRedirect">login</span> to
           Fulfill<br />a Request.
         </h2>
       </div>
-      <div v-if="flag">
-        <h2>Report as<br />innapropriate.</h2>
+      <div v-if="user && flag">
+        <h2>Report as<br />Innapropriate.</h2>
+        <div class="btns">
+          <div class="btn" @click="handleFlagConfirm">
+            Yes<i style="color: #00ff00" class="fa-solid fa-check fa-lg"></i>
+          </div>
+          <div class="btn" @click="handleModalClose">
+            No<i class="fa-solid fa-xmark fa-xl"></i>
+          </div>
+        </div>
       </div>
       <i class="fa-solid fa-xmark fa-2xl" @click="handleModalClose"></i>
       <div class="err mt-3" v-if="showErr">
@@ -68,6 +75,7 @@
 import { ref } from "vue";
 import Navbar from "@/components/Navbar";
 import Modal from "@/components/Modal";
+import ReportBtn from "@/components/ReportBtn";
 import getCollection from "@/composables/getCollection";
 import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
@@ -78,7 +86,7 @@ import { doc, updateDoc } from "firebase/firestore";
 
 export default {
   props: ["loaded"],
-  components: { Navbar, Modal },
+  components: { Navbar, Modal, ReportBtn },
   setup() {
     const showModal = ref(false);
     const showErr = ref(false);
@@ -135,6 +143,11 @@ export default {
       flag.value = true;
     };
 
+    const handleFlagConfirm = () => {
+      console.log("Report confirmed");
+      handleModalClose();
+    };
+
     return {
       showModal,
       showErr,
@@ -146,6 +159,7 @@ export default {
       handleModalClose,
       handleRedirect,
       handleFlag,
+      handleFlagConfirm,
     };
   },
   mounted() {
@@ -342,14 +356,26 @@ export default {
         & i {
           color: #45c3ff;
           cursor: pointer;
+          line-height: 1rem;
+          margin-top: 0;
+          @media (min-width: 576px) {
+            // RED (SM)
+          }
+          @media (min-width: 768px) {
+            // GREEN (MD)
+            margin-top: 7px;
+          }
+          @media (min-width: 992px) {
+            // BLUE (LG)
+          }
+          @media (min-width: 1200px) {
+            // YELLOW (XL)
+          }
+          @media (min-width: 1400px) {
+            // PURPLE (XXL)
+          }
           &:hover {
             color: red;
-          }
-          &:nth-child(2) {
-            color: black;
-            &:hover {
-              color: red;
-            }
           }
         }
       }
