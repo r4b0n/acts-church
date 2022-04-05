@@ -10,17 +10,17 @@
       maxime?
     </p>
     <div class="filter container-fluid mb-4">
-      <h2 style="line-height: 1rem; margin-right: 5px; margin-bottom: 0">
+      <h2 style="line-height: 1rem; margin: 2px 5px 0 0">
         <i class="fa-solid fa-filter fa-xs"></i>
       </h2>
-      <h2 style="line-height: 1rem; margin-right: 10px; margin-bottom: 0">
-        Filter
-      </h2>
+      <h2 style="line-height: 1rem; margin: 2px 10px 0 0">Filter</h2>
       <input
         class="form-control"
         type="tel"
         placeholder="Zipcode"
         maxlength="5"
+        v-model="zipcode"
+        @keyup="handleFilter"
       />
     </div>
     <ul v-if="requests">
@@ -28,16 +28,15 @@
         <div class="req">
           <p class="mb-2">{{ request.subject }}</p>
           <p>{{ request.request }}</p>
+          <p style="font-weight: 700" class="mt-2">
+            Zipcode: <span style="color: #45c3ff">{{ request.zipcode }}</span>
+          </p>
         </div>
         <div class="help">
           <i
             class="fa-solid fa-heart-crack fa-2xl"
             @click="handleAssignment(request)"
           ></i>
-          <!-- <i
-            class="fa-solid fa-triangle-exclamation fa-2xl"
-            @click="handleFlag(request)"
-          ></i> -->
           <ReportBtn @click="handleFlag(request)" />
         </div>
       </li>
@@ -90,13 +89,20 @@ import { ref } from "vue";
 import Navbar from "@/components/Navbar";
 import Modal from "@/components/Modal";
 import ReportBtn from "@/components/ReportBtn";
-import getCollection from "@/composables/getCollection";
+//import getCollection from "@/composables/getCollection";
 import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
 
 // firebase imports
 import { db } from "../firebase/config";
-import { doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 
 export default {
   props: ["loaded"],
@@ -108,13 +114,8 @@ export default {
     const { user } = getUser();
     const router = useRouter();
     const curRequest = ref(null);
-
-    const { docs: requests } = getCollection(
-      "requests",
-      ["fulfilled", "==", false],
-      ["assignee", "==", ""]
-      // ["zipcode", "==", 81101]
-    );
+    const zipcode = ref(null);
+    const requests = ref(null);
 
     const handleAssignment = (request) => {
       curRequest.value = request;
@@ -162,6 +163,57 @@ export default {
       handleModalClose();
     };
 
+    const handleRequests = (zip) => {
+      // collection reference
+      let colRef = collection(db, "requests");
+      if (zip) {
+        // let { docs } = getCollection(
+        //   "requests",
+        //   ["fulfilled", "==", false],
+        //   ["assignee", "==", ""],
+        //   ["zipcode", "==", parseInt(zip)]
+        // );
+        colRef = query(
+          colRef,
+          where("fulfilled", "==", false),
+          where("assignee", "==", ""),
+          where("zipcode", "==", parseInt(zip))
+        );
+      } else {
+        // let { docs } = getCollection(
+        //   "requests",
+        //   ["fulfilled", "==", false],
+        //   ["assignee", "==", ""]
+        // );
+        colRef = query(
+          colRef,
+          where("fulfilled", "==", false),
+          where("assignee", "==", "")
+        );
+      }
+      onSnapshot(colRef, (snapshot) => {
+        let results = [];
+
+        // needs to be snapshot.docs no relation to const docs ref above
+        snapshot.docs.forEach((doc) => {
+          results.push({ ...doc.data(), id: doc.id });
+        });
+
+        // update values
+        requests.value = results;
+      });
+    };
+
+    const handleFilter = () => {
+      if (zipcode.value === "") {
+        handleRequests();
+      } else {
+        handleRequests(zipcode.value);
+      }
+    };
+
+    handleRequests();
+
     return {
       showModal,
       showErr,
@@ -174,6 +226,8 @@ export default {
       handleRedirect,
       handleFlag,
       handleFlagConfirm,
+      handleFilter,
+      zipcode,
     };
   },
   mounted() {
