@@ -3,7 +3,7 @@
   <div class="home container-fluid">
     <Logo :loaded="loaded" />
     <About />
-    <CreateBookForm />
+    <CreateRequest />
     <Events />
   </div>
   <Footer />
@@ -15,12 +15,12 @@ import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import About from "@/components/About";
 import Events from "@/components/Events";
-import CreateBookForm from "@/components/CreateBookForm";
+import CreateRequest from "@/components/CreateRequest";
 
 export default {
   name: "Home",
   props: ["loaded"],
-  components: { Navbar, Footer, Logo, About, Events, CreateBookForm },
+  components: { Navbar, Footer, Logo, About, Events, CreateRequest },
   setup() {
     return {};
   },

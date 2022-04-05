@@ -231,10 +231,17 @@ export default {
 
       const { user } = getUser();
 
+      let zipArray = this.zipcode.split("");
+
       await addDoc(colRef, {
         name: this.name,
         email: user.value.email,
         zipcode: parseInt(this.zipcode),
+        zip1: zipArray[0],
+        zip2: zipArray[1],
+        zip3: zipArray[2],
+        zip4: zipArray[3],
+        zip5: zipArray[4],
         phone: this.phone,
         subject: this.subject,
         request: this.request,

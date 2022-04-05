@@ -20,7 +20,7 @@
         placeholder="Zipcode"
         maxlength="5"
         v-model="zipcode"
-        @keyup="handleFilter"
+        @keyup.prevent="handleFilter"
       />
     </div>
     <ul v-if="requests">
@@ -62,7 +62,7 @@
         <h2>
           You must <span class="link" @click="handleRedirect">signup</span>
           <br />or <span class="link" @click="handleRedirect">login</span> to
-          Fulfill<br />a Request.
+          {{ action }}<br />a Request.
         </h2>
       </div>
       <div v-if="user && flag">
@@ -116,10 +116,12 @@ export default {
     const curRequest = ref(null);
     const zipcode = ref(null);
     const requests = ref(null);
+    const action = ref("");
 
     const handleAssignment = (request) => {
       curRequest.value = request;
       showModal.value = !showModal.value;
+      action.value = "Fulfill";
     };
 
     const handleConfirmation = () => {
@@ -138,6 +140,7 @@ export default {
       showModal.value = !showModal.value;
       showErr.value = false;
       flag.value = false;
+      action.value = "";
     };
 
     const handleRedirect = (e) => {
@@ -156,6 +159,7 @@ export default {
       curRequest.value = request;
       showModal.value = !showModal.value;
       flag.value = true;
+      action.value = "Report";
     };
 
     const handleFlagConfirm = () => {
@@ -167,18 +171,65 @@ export default {
       // collection reference
       let colRef = collection(db, "requests");
       if (zip) {
+        let zipArray = zip.split("");
+        switch (zip.length) {
+          case 1:
+            colRef = query(
+              colRef,
+              where("fulfilled", "==", false),
+              where("assignee", "==", ""),
+              where("zip1", "==", zipArray[0])
+            );
+            break;
+          case 2:
+            colRef = query(
+              colRef,
+              where("fulfilled", "==", false),
+              where("assignee", "==", ""),
+              where("zip1", "==", zipArray[0]),
+              where("zip2", "==", zipArray[1])
+            );
+            break;
+          case 3:
+            colRef = query(
+              colRef,
+              where("fulfilled", "==", false),
+              where("assignee", "==", ""),
+              where("zip1", "==", zipArray[0]),
+              where("zip2", "==", zipArray[1]),
+              where("zip3", "==", zipArray[2])
+            );
+            break;
+          case 4:
+            colRef = query(
+              colRef,
+              where("fulfilled", "==", false),
+              where("assignee", "==", ""),
+              where("zip1", "==", zipArray[0]),
+              where("zip2", "==", zipArray[1]),
+              where("zip3", "==", zipArray[2]),
+              where("zip4", "==", zipArray[3])
+            );
+            break;
+          case 5:
+            colRef = query(
+              colRef,
+              where("fulfilled", "==", false),
+              where("assignee", "==", ""),
+              where("zip1", "==", zipArray[0]),
+              where("zip2", "==", zipArray[1]),
+              where("zip3", "==", zipArray[2]),
+              where("zip4", "==", zipArray[3]),
+              where("zip5", "==", zipArray[4])
+            );
+            break;
+        }
         // let { docs } = getCollection(
         //   "requests",
         //   ["fulfilled", "==", false],
         //   ["assignee", "==", ""],
         //   ["zipcode", "==", parseInt(zip)]
         // );
-        colRef = query(
-          colRef,
-          where("fulfilled", "==", false),
-          where("assignee", "==", ""),
-          where("zipcode", "==", parseInt(zip))
-        );
       } else {
         // let { docs } = getCollection(
         //   "requests",
@@ -228,6 +279,7 @@ export default {
       handleFlagConfirm,
       handleFilter,
       zipcode,
+      action,
     };
   },
   mounted() {
@@ -359,6 +411,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
     margin: 0;
     padding: 0 20px;
     & li {
