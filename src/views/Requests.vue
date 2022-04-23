@@ -41,6 +41,14 @@
         </div>
       </li>
     </ul>
+    <div class="btns" v-if="requests && requests.length > 0">
+      <button class="btn prev" @click="handlePaginate" :disabled="page === 0">
+        <i class="fa-solid fa-arrow-left"></i> prev.
+      </button>
+      <button class="btn next" @click="handlePaginate">
+        next <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
     <div class="container-fluid" v-if="requests && requests.length === 0">
       <h2>There are no Requests.</h2>
     </div>
@@ -66,7 +74,7 @@
         </h2>
       </div>
       <div v-if="user && flag">
-        <h2>Report as<br />Innapropriate.</h2>
+        <h2>Report as<br />Offensive.</h2>
         <div class="btns">
           <div class="btn" @click="handleFlagConfirm">
             Yes<i style="color: #00ff00" class="fa-solid fa-check fa-lg"></i>
@@ -90,6 +98,7 @@ import Navbar from "@/components/Navbar";
 import Modal from "@/components/Modal";
 import ReportBtn from "@/components/ReportBtn";
 //import getCollection from "@/composables/getCollection";
+//import getCollectionLength from "@/composables/getCollectionLength";
 import getUser from "@/composables/getUser";
 import { useRouter } from "vue-router";
 
@@ -100,8 +109,12 @@ import {
   onSnapshot,
   query,
   where,
+  limit,
   doc,
   updateDoc,
+  orderBy,
+  startAfter,
+  startAt,
 } from "firebase/firestore";
 
 export default {
@@ -117,6 +130,9 @@ export default {
     const zipcode = ref(null);
     const requests = ref(null);
     const action = ref("");
+    const page = ref(0);
+    let prevDocs = [];
+    let nextDoc = null;
 
     const handleAssignment = (request) => {
       curRequest.value = request;
@@ -155,7 +171,6 @@ export default {
     };
 
     const handleFlag = (request) => {
-      console.log("Flagged: ", request);
       curRequest.value = request;
       showModal.value = !showModal.value;
       flag.value = true;
@@ -167,9 +182,37 @@ export default {
       handleModalClose();
     };
 
-    const handleRequests = (zip) => {
+    const handleRequests = (zip, dir) => {
       // collection reference
       let colRef = collection(db, "requests");
+      if (dir) {
+        //console.log("Prev Doc: ", prevDocs);
+        //console.log("Next Doc: ", nextDoc);
+        switch (dir) {
+          case "next":
+            console.log("next");
+            colRef = query(
+              colRef,
+              where("fulfilled", "==", false),
+              where("assignee", "==", ""),
+              orderBy("created", "desc"),
+              startAfter(nextDoc),
+              limit(3)
+            );
+            break;
+          case "prev":
+            console.log("prev");
+            colRef = query(
+              colRef,
+              where("fulfilled", "==", false),
+              where("assignee", "==", ""),
+              orderBy("created", "desc"),
+              startAt(prevDocs[page.value]),
+              limit(3)
+            );
+            break;
+        }
+      }
       if (zip) {
         let zipArray = zip.split("");
         switch (zip.length) {
@@ -230,7 +273,7 @@ export default {
         //   ["assignee", "==", ""],
         //   ["zipcode", "==", parseInt(zip)]
         // );
-      } else {
+      } else if (!zip && !dir) {
         // let { docs } = getCollection(
         //   "requests",
         //   ["fulfilled", "==", false],
@@ -239,14 +282,23 @@ export default {
         colRef = query(
           colRef,
           where("fulfilled", "==", false),
-          where("assignee", "==", "")
+          where("assignee", "==", ""),
+          orderBy("created", "desc"),
+          limit(3)
         );
       }
       onSnapshot(colRef, (snapshot) => {
         let results = [];
 
         // needs to be snapshot.docs no relation to const docs ref above
-        snapshot.docs.forEach((doc) => {
+        snapshot.docs.forEach((doc, index) => {
+          //console.log("Doc: ", doc);
+          //console.log("Index: ", index);
+          if (index === 0) {
+            prevDocs[page.value] = doc;
+            console.log("Prev Docs: ", prevDocs);
+          }
+          nextDoc = doc;
           results.push({ ...doc.data(), id: doc.id });
         });
 
@@ -260,6 +312,20 @@ export default {
         handleRequests();
       } else {
         handleRequests(zipcode.value);
+      }
+    };
+
+    const handlePaginate = (e) => {
+      //console.log("Paginate: ", e.target.classList[1]);
+      switch (e.target.classList[1]) {
+        case "next":
+          page.value++;
+          handleRequests(null, "next");
+          break;
+        case "prev":
+          page.value--;
+          handleRequests(null, "prev");
+          break;
       }
     };
 
@@ -278,8 +344,10 @@ export default {
       handleFlag,
       handleFlagConfirm,
       handleFilter,
+      handlePaginate,
       zipcode,
       action,
+      page,
     };
   },
   mounted() {
@@ -324,7 +392,7 @@ export default {
 .modal {
   padding: 20px !important;
   & .content {
-    background: white;
+    background: #f7f7f7;
     position: relative;
     width: 100%;
     max-width: 750px;
@@ -523,6 +591,79 @@ export default {
             color: red;
           }
         }
+      }
+    }
+  }
+}
+.btns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 750px;
+  padding: 0 20px !important;
+  @media (min-width: 576px) {
+    // RED (SM)
+  }
+  @media (min-width: 768px) {
+    // GREEN (MD)
+    padding: 0 !important;
+  }
+  @media (min-width: 992px) {
+    // BLUE (LG)
+  }
+  @media (min-width: 1200px) {
+    // YELLOW (XL)
+  }
+  @media (min-width: 1400px) {
+    // PURPLE (XXL)
+  }
+  & .btn {
+    width: 47%;
+    margin-bottom: 20px;
+    @media (min-width: 576px) {
+      // RED (SM)
+    }
+    @media (min-width: 768px) {
+      // GREEN (MD)
+      width: 48.5%;
+    }
+    @media (min-width: 992px) {
+      // BLUE (LG)
+    }
+    @media (min-width: 1200px) {
+      // YELLOW (XL)
+    }
+    @media (min-width: 1400px) {
+      // PURPLE (XXL)
+    }
+    &.prev {
+      & i {
+        margin-right: 10px;
+      }
+    }
+    &.next {
+      & i {
+        margin-left: 10px;
+      }
+    }
+    &:hover {
+      color: white;
+      background: #707070;
+      @media (min-width: 576px) {
+        // RED (SM)
+        background: #45c3ff;
+      }
+      @media (min-width: 768px) {
+        // GREEN (MD)
+      }
+      @media (min-width: 992px) {
+        // BLUE (LG)
+      }
+      @media (min-width: 1200px) {
+        // YELLOW (XL)
+      }
+      @media (min-width: 1400px) {
+        // PURPLE (XXL)
       }
     }
   }
