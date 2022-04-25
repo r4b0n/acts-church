@@ -41,11 +41,15 @@
         </div>
       </li>
     </ul>
-    <div class="btns" v-if="requests && requests.length > 0">
+    <div class="btns">
       <button class="btn prev" @click="handlePaginate" :disabled="page === 0">
         <i class="fa-solid fa-arrow-left"></i> prev.
       </button>
-      <button class="btn next" @click="handlePaginate">
+      <button
+        class="btn next"
+        @click="handlePaginate"
+        :disabled="requests && (requests.length === 0 || requests.length < 3)"
+      >
         next <i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
@@ -186,34 +190,172 @@ export default {
       // collection reference
       let colRef = collection(db, "requests");
       if (dir) {
-        //console.log("Prev Doc: ", prevDocs);
-        //console.log("Next Doc: ", nextDoc);
         switch (dir) {
           case "next":
-            console.log("next");
-            colRef = query(
-              colRef,
-              where("fulfilled", "==", false),
-              where("assignee", "==", ""),
-              orderBy("created", "desc"),
-              startAfter(nextDoc),
-              limit(3)
-            );
+            if (!zip) {
+              colRef = query(
+                colRef,
+                where("fulfilled", "==", false),
+                where("assignee", "==", ""),
+                orderBy("created", "desc"),
+                startAfter(nextDoc),
+                limit(3)
+              );
+            } else if (zip) {
+              let zipArray = zip.split("");
+              switch (zip.length) {
+                case 1:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    orderBy("created", "desc"),
+                    startAfter(nextDoc),
+                    limit(3)
+                  );
+                  break;
+                case 2:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    orderBy("created", "desc"),
+                    startAfter(nextDoc),
+                    limit(3)
+                  );
+                  break;
+                case 3:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    where("zip3", "==", zipArray[2]),
+                    orderBy("created", "desc"),
+                    startAfter(nextDoc),
+                    limit(3)
+                  );
+                  break;
+                case 4:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    where("zip3", "==", zipArray[2]),
+                    where("zip4", "==", zipArray[3]),
+                    orderBy("created", "desc"),
+                    startAfter(nextDoc),
+                    limit(3)
+                  );
+                  break;
+                case 5:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    where("zip3", "==", zipArray[2]),
+                    where("zip4", "==", zipArray[3]),
+                    where("zip5", "==", zipArray[4]),
+                    orderBy("created", "desc"),
+                    startAfter(nextDoc),
+                    limit(3)
+                  );
+                  break;
+              }
+            }
             break;
           case "prev":
-            console.log("prev");
-            colRef = query(
-              colRef,
-              where("fulfilled", "==", false),
-              where("assignee", "==", ""),
-              orderBy("created", "desc"),
-              startAt(prevDocs[page.value]),
-              limit(3)
-            );
+            if (!zip) {
+              colRef = query(
+                colRef,
+                where("fulfilled", "==", false),
+                where("assignee", "==", ""),
+                orderBy("created", "desc"),
+                startAt(prevDocs[page.value]),
+                limit(3)
+              );
+            } else if (zip) {
+              let zipArray = zip.split("");
+              switch (zip.length) {
+                case 1:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    orderBy("created", "desc"),
+                    startAt(prevDocs[page.value]),
+                    limit(3)
+                  );
+                  break;
+                case 2:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    orderBy("created", "desc"),
+                    startAt(prevDocs[page.value]),
+                    limit(3)
+                  );
+                  break;
+                case 3:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    where("zip3", "==", zipArray[2]),
+                    orderBy("created", "desc"),
+                    startAt(prevDocs[page.value]),
+                    limit(3)
+                  );
+                  break;
+                case 4:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    where("zip3", "==", zipArray[2]),
+                    where("zip4", "==", zipArray[3]),
+                    orderBy("created", "desc"),
+                    startAt(prevDocs[page.value]),
+                    limit(3)
+                  );
+                  break;
+                case 5:
+                  colRef = query(
+                    colRef,
+                    where("fulfilled", "==", false),
+                    where("assignee", "==", ""),
+                    where("zip1", "==", zipArray[0]),
+                    where("zip2", "==", zipArray[1]),
+                    where("zip3", "==", zipArray[2]),
+                    where("zip4", "==", zipArray[3]),
+                    where("zip5", "==", zipArray[4]),
+                    orderBy("created", "desc"),
+                    startAt(prevDocs[page.value]),
+                    limit(3)
+                  );
+                  break;
+              }
+            }
             break;
         }
       }
-      if (zip) {
+      if (zip && !dir) {
         let zipArray = zip.split("");
         switch (zip.length) {
           case 1:
@@ -221,7 +363,9 @@ export default {
               colRef,
               where("fulfilled", "==", false),
               where("assignee", "==", ""),
-              where("zip1", "==", zipArray[0])
+              where("zip1", "==", zipArray[0]),
+              orderBy("created", "desc"),
+              limit(3)
             );
             break;
           case 2:
@@ -230,7 +374,9 @@ export default {
               where("fulfilled", "==", false),
               where("assignee", "==", ""),
               where("zip1", "==", zipArray[0]),
-              where("zip2", "==", zipArray[1])
+              where("zip2", "==", zipArray[1]),
+              orderBy("created", "desc"),
+              limit(3)
             );
             break;
           case 3:
@@ -240,7 +386,9 @@ export default {
               where("assignee", "==", ""),
               where("zip1", "==", zipArray[0]),
               where("zip2", "==", zipArray[1]),
-              where("zip3", "==", zipArray[2])
+              where("zip3", "==", zipArray[2]),
+              orderBy("created", "desc"),
+              limit(3)
             );
             break;
           case 4:
@@ -251,7 +399,9 @@ export default {
               where("zip1", "==", zipArray[0]),
               where("zip2", "==", zipArray[1]),
               where("zip3", "==", zipArray[2]),
-              where("zip4", "==", zipArray[3])
+              where("zip4", "==", zipArray[3]),
+              orderBy("created", "desc"),
+              limit(3)
             );
             break;
           case 5:
@@ -263,7 +413,9 @@ export default {
               where("zip2", "==", zipArray[1]),
               where("zip3", "==", zipArray[2]),
               where("zip4", "==", zipArray[3]),
-              where("zip5", "==", zipArray[4])
+              where("zip5", "==", zipArray[4]),
+              orderBy("created", "desc"),
+              limit(3)
             );
             break;
         }
@@ -292,11 +444,8 @@ export default {
 
         // needs to be snapshot.docs no relation to const docs ref above
         snapshot.docs.forEach((doc, index) => {
-          //console.log("Doc: ", doc);
-          //console.log("Index: ", index);
           if (index === 0) {
             prevDocs[page.value] = doc;
-            console.log("Prev Docs: ", prevDocs);
           }
           nextDoc = doc;
           results.push({ ...doc.data(), id: doc.id });
@@ -308,6 +457,7 @@ export default {
     };
 
     const handleFilter = () => {
+      page.value = 0;
       if (zipcode.value === "") {
         handleRequests();
       } else {
@@ -320,11 +470,19 @@ export default {
       switch (e.target.classList[1]) {
         case "next":
           page.value++;
-          handleRequests(null, "next");
+          if (zipcode.value === "") {
+            handleRequests(null, "next");
+          } else {
+            handleRequests(zipcode.value, "next");
+          }
           break;
         case "prev":
           page.value--;
-          handleRequests(null, "prev");
+          if (zipcode.value === "") {
+            handleRequests(null, "prev");
+          } else {
+            handleRequests(zipcode.value, "prev");
+          }
           break;
       }
     };
