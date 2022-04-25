@@ -54,7 +54,7 @@
       </button>
     </div>
     <div class="container-fluid" v-if="requests && requests.length === 0">
-      <h2>There are no Requests.</h2>
+      <h2>There are {{ pageAction }} Requests.</h2>
     </div>
   </div>
   <Modal v-if="showModal">
@@ -135,6 +135,7 @@ export default {
     const requests = ref(null);
     const action = ref("");
     const page = ref(0);
+    const pageAction = ref("no");
     let prevDocs = [];
     let nextDoc = null;
 
@@ -188,6 +189,11 @@ export default {
 
     const handleRequests = (zip, dir) => {
       // collection reference
+      if (page.value > 0) {
+        pageAction.value = "no more";
+      } else {
+        pageAction.value = "no";
+      }
       let colRef = collection(db, "requests");
       if (dir) {
         switch (dir) {
@@ -506,6 +512,7 @@ export default {
       zipcode,
       action,
       page,
+      pageAction,
     };
   },
   mounted() {
