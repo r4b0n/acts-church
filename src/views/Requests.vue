@@ -53,6 +53,7 @@
         next <i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
+    <div class="page_number">Page: {{ page + 1 }}</div>
     <div class="container-fluid" v-if="requests && requests.length === 0">
       <h2>There are {{ pageAction }} Requests.</h2>
     </div>
@@ -784,7 +785,7 @@ export default {
   }
   & .btn {
     width: 47%;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     @media (min-width: 576px) {
       // RED (SM)
     }
@@ -832,5 +833,13 @@ export default {
       }
     }
   }
+}
+.page_number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #45c3ff;
+  text-transform: uppercase;
+  line-height: 1.5rem;
+  margin-bottom: 20px;
 }
 </style>

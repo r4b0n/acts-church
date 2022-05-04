@@ -172,7 +172,7 @@ import {
 } from "firebase/firestore";
 
 // emailjs import
-//import emailjs from "@emailjs/browser";
+import emailjs from "@emailjs/browser";
 
 export default {
   components: { Info },
@@ -187,6 +187,7 @@ export default {
       fulfilledCount: 0,
       pendingCount: 0,
       router: useRouter(),
+      mailOn: false,
     };
   },
   setup() {
@@ -255,29 +256,32 @@ export default {
         userID: user.value.uid,
         created: serverTimestamp(),
       });
-      // const templateParams = {
-      //   from_name: "Acts of the Church",
-      //   action: "Request Added",
-      //   email: user.value.email,
-      //   reply_to: "ryanrabon@actsofthechurch.org",
-      //   to_name: this.name,
-      //   message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      // };
-      // emailjs
-      //   .send(
-      //     "service_2al5aml",
-      //     "template_all",
-      //     templateParams,
-      //     "ugyQI0jOpCHu-bCYO"
-      //   )
-      //   .then(
-      //     (response) => {
-      //       console.log("SUCCESS!", response.status, response.text);
-      //     },
-      //     (err) => {
-      //       console.log("FAILED...", err);
-      //     }
-      //   );
+      console.log("Mail On: ", this.mailOn);
+      if (this.mailOn) {
+        const templateParams = {
+          from_name: "Acts of the Church",
+          action: "Request Added",
+          email: user.value.email,
+          reply_to: "ryanrabon@actsofthechurch.org",
+          to_name: this.name,
+          message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+        };
+        emailjs
+          .send(
+            "service_2al5aml",
+            "template_all",
+            templateParams,
+            "ugyQI0jOpCHu-bCYO"
+          )
+          .then(
+            (response) => {
+              console.log("SUCCESS!", response.status, response.text);
+            },
+            (err) => {
+              console.log("FAILED...", err);
+            }
+          );
+      }
       this.resetForm();
       this.submission = true;
     },
