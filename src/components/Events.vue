@@ -2,7 +2,7 @@
   <div id="section-events" class="events container-fluid py-4">
     <div class="pattern"></div>
     <div class="content container-fluid">
-      <h1>Church Events</h1>
+      <h1>Church Events<br />W.I.P.</h1>
       <div class="event p-3">
         <img src="@/assets/img-event.png" class="venue-logo" />
         <div class="info">

@@ -23,6 +23,9 @@
         @keyup.prevent="handleFilter"
       />
     </div>
+    <div class="empty container-fluid" v-if="requests && requests.length === 0">
+      <h2>There are {{ pageAction }} Requests.</h2>
+    </div>
     <ul v-if="requests">
       <li v-for="request in requests" :key="request.id">
         <div class="req">
@@ -54,9 +57,6 @@
       </button>
     </div>
     <div class="page_number">Page: {{ page + 1 }}</div>
-    <div class="container-fluid" v-if="requests && requests.length === 0">
-      <h2>There are {{ pageAction }} Requests.</h2>
-    </div>
   </div>
   <Modal v-if="showModal">
     <div class="content container-fluid">
@@ -633,8 +633,15 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
   & h2 {
     color: #45c3ff;
+  }
+  & .empty {
+    & h2 {
+      line-height: 1.5rem;
+      margin-bottom: 25px;
+    }
   }
   & .info {
     max-width: 750px;

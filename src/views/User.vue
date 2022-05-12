@@ -27,11 +27,22 @@
         <div class="req">
           <p class="mb-2">{{ assignment.subject }}</p>
           <p>{{ assignment.request }}</p>
+          <p class="name mt-2">
+            Name: <span>{{ assignment.name }}</span>
+          </p>
+          <p class="name mt-2">
+            Zipcode: <span>{{ assignment.zipcode }}</span>
+          </p>
         </div>
         <div class="trash">
           <i
             class="fa-solid fa-trash-can fa-2xl"
-            @click="handleReassignment(assignment)"
+            @click="handleReassignment(assignment, 'trash')"
+          ></i>
+          <i class="fa-solid fa-message-pen fa-2xl"></i>
+          <i
+            class="fa-solid fa-heart-circle-check fa-2xl"
+            @click="handleReassignment(assignment, 'heart')"
           ></i>
         </div>
       </li>
@@ -47,6 +58,7 @@ import HomeBtn from "@/components/HomeBtn";
 import LogoutBtn from "@/components/LogoutBtn";
 import getCollection from "@/composables/getCollection";
 import getUser from "@/composables/getUser";
+import { useRouter } from "vue-router";
 
 // firebase imports
 import { db } from "../firebase/config";
@@ -57,6 +69,7 @@ export default {
   components: { HomeBtn, LogoutBtn },
   setup() {
     const { user } = getUser();
+    const router = useRouter();
 
     const { docs: requests } = getCollection("requests", [
       "userID",
@@ -75,11 +88,19 @@ export default {
       deleteDoc(docRef);
     };
 
-    const handleReassignment = (assignment) => {
-      const docRef = doc(db, "requests", assignment.id);
-      updateDoc(docRef, {
-        assignee: "",
-      });
+    const handleReassignment = (assignment, action) => {
+      if (action === "trash") {
+        const docRef = doc(db, "requests", assignment.id);
+        updateDoc(docRef, {
+          assignee: "",
+        });
+      } else if (action === "heart") {
+        console.log("Fullfill Assignment");
+        router.push({
+          name: "Fulfill",
+          params: { id: assignment.id },
+        });
+      }
     };
 
     // const colRef = collection(db, "requests");
@@ -111,6 +132,12 @@ export default {
   & .ass {
     & li {
       border: 1px dashed red;
+      & .name {
+        font-weight: 700;
+        & span {
+          color: #45c3ff;
+        }
+      }
     }
     & .trash {
       border-top: 1px dashed red;
@@ -196,7 +223,8 @@ export default {
       }
       & .trash {
         display: flex;
-        justify-content: center;
+        flex-direction: row;
+        justify-content: space-around;
         align-items: center;
         border-top: 1px dashed #707070;
         position: absolute;
@@ -208,6 +236,7 @@ export default {
         }
         @media (min-width: 768px) {
           // GREEN (MD)
+          flex-direction: column;
           border-top: unset;
           border-left: 1px dashed #707070;
           right: 0;
@@ -225,6 +254,12 @@ export default {
         }
         & i {
           cursor: pointer;
+          &:hover {
+            color: #45c3ff;
+          }
+        }
+        & i:nth-child(3) {
+          color: red;
           &:hover {
             color: #45c3ff;
           }

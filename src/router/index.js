@@ -7,6 +7,7 @@ import Signup from "../views/Signup.vue";
 import Testimonies from "../views/Testimonies.vue";
 import Requests from "../views/Requests.vue";
 import User from "../views/User.vue";
+import Fulfill from "../views/Fulfill.vue";
 
 // firebase imports
 import { auth } from "../firebase/config";
@@ -50,6 +51,12 @@ const routes = [
     path: "/user",
     name: "User",
     component: User,
+    beforeEnter: requireAuth,
+  },
+  {
+    path: "/fulfill",
+    name: "Fulfill",
+    component: Fulfill,
     beforeEnter: requireAuth,
   },
 ];

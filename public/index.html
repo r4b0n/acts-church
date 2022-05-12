@@ -1,15 +1,28 @@
 <!DOCTYPE html>
-<html lang="" style="background: #f7f7f7">
+<html lang="" style="background: #f7f7f7" prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://actsofthechurch.org/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Acts of the Church" />
+    <meta property="og:description" content="At your service." />
+    <meta
+      property="og:image"
+      content="https://actsofthechurch.org/aotc_metaimage_facebook.jpg"
+    />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <link href="<%= BASE_URL %>all.css" rel="stylesheet" />
+    <!-- our project just needs Font Awesome Solid + Brands -->
+    <link href="<%= BASE_URL %>fontawesome.min.css" rel="stylesheet" />
+    <link href="<%= BASE_URL %>brands.min.css" rel="stylesheet" />
+    <link href="<%= BASE_URL %>solid.min.css" rel="stylesheet" />
+
+    <!-- update existing v5 CSS to use v6 icons and assets -->
+    <link href="<%= BASE_URL %>v5-font-face.min.css" rel="stylesheet" />
     <title>Acts of the Church</title>
-    <script
-      src="https://kit.fontawesome.com/7498decedc.js"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <noscript>
